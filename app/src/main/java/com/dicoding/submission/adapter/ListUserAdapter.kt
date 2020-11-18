@@ -1,6 +1,5 @@
 package com.dicoding.submission.adapter
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -14,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.submission.R
 import com.dicoding.submission.model.ItemUser
 
-class ListUserAdapter internal constructor(context: Context) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
+class ListUserAdapter internal constructor() : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
 
     private lateinit var onItemClickCallback: OnItemClickCallback
     private var listUser = emptyList<ItemUser>()

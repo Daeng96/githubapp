@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        adapter = ListUserAdapter(this)
+        adapter = ListUserAdapter()
         recyclerView = findViewById(R.id.rv_search_user)
 
         search = ViewModelProvider(this).get(SearchViewModel::class.java)
