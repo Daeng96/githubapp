@@ -7,3 +7,4 @@
 ~MVVM
 ~Notifikasi
 ~ContentProvider
+~Dilengkapi dengan Widget Desktop
