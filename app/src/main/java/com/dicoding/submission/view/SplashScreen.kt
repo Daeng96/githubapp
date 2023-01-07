@@ -1,13 +1,14 @@
 package com.dicoding.submission.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.submission.R
-import kotlinx.android.synthetic.main.activity_splash_screen.*
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
 
 	private val delayMillis = 2000L
@@ -17,6 +18,7 @@ class SplashScreen : AppCompatActivity() {
 		setContentView(R.layout.activity_splash_screen)
 
 		supportActionBar?.hide()
+
 		motionLayout.startLayoutAnimation()
 
 		Looper.myLooper()?.let {

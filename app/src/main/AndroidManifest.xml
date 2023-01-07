@@ -24,7 +24,8 @@
         android:theme="@style/Theme.GithubUserBFAA">
 
 
-        <receiver android:name=".widget.MyWidget">
+        <receiver android:name=".widget.MyWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -52,7 +53,8 @@
             android:exported="true"
             tools:ignore="ExportedReceiver" />
 
-        <activity android:name=".view.SplashScreen">
+        <activity android:name=".view.SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

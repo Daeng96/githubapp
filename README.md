@@ -1,5 +1,7 @@
 # githubapp
 
+Dibuat pada tahun 2020
+
 ~Mencari pengguna github dan melihat pengikut dan yg diikuti
 ~Room database
 ~Retrofit + RxJava
