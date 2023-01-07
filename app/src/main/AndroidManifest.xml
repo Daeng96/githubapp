@@ -15,6 +15,7 @@
         android:protectionLevel="normal" />
 
     <application
+        android:name=".GithubApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

@@ -79,7 +79,8 @@ dependencies {
 
     // compose
     implementation ("androidx.compose.foundation:foundation:$composeVersion")
-    implementation ("androidx.compose.material:material:$composeVersion")
+    implementation ("androidx.compose.material3:material3:1.1.0-alpha03")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha03")
     implementation ("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation ("androidx.compose.ui:ui:$composeVersion")

@@ -19,9 +19,12 @@ import com.dicoding.submission.R
 import com.dicoding.submission.adapter.ListUserAdapter
 import com.dicoding.submission.model.ItemUser
 import com.dicoding.submission.viewmodel.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_main.*
+//import kotlinx.android.synthetic.main.activity_main.*
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var search: SearchViewModel
@@ -38,29 +41,32 @@ class MainActivity : AppCompatActivity() {
 
         search = ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        search.searchUsers.observe(this,{
+        search.searchUsers.observe(this) {
             listUser = it.items as List<ItemUser>
             it.items.let { it1 -> adapter.setListUsers(it1) }
-	        progressV(false)
+            progressV(false)
             logoVisibility(false)
             errorConnect(false)
-        })
+        }
 
         setUsers()
 
-        search.notFound.observe(this, {
-            alertDialog(getString(R.string.users_not_found), getString(R.string.not_found_message, it))
-	        progressV(false)
+        search.notFound.observe(this) {
+            alertDialog(
+                getString(R.string.users_not_found),
+                getString(R.string.not_found_message, it)
+            )
+            progressV(false)
             logoVisibility(true)
-        })
+        }
 
-        search.errorConnection.observe(this, {str->
+        search.errorConnection.observe(this) { str ->
             adapter.setListUsers(ArrayList(0))
             alertDialog(getString(R.string.connection_failed_title), str)
             progressV(false)
             errorConnect(true)
             logoVisibility(false)
-        })
+        }
 
     }
 
