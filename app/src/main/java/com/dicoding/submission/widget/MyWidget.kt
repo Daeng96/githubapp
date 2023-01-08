@@ -13,7 +13,6 @@ import android.widget.RemoteViews
 import androidx.core.app.TaskStackBuilder
 import com.dicoding.submission.R
 import com.dicoding.submission.view.DetailUserActivity
-import com.dicoding.submission.view.ListFavoriteActivity
 
 class MyWidget : AppWidgetProvider() {
 

@@ -56,7 +56,6 @@
             tools:ignore="ExportedReceiver" />
 
         <activity android:name=".view.SettingsActivity" />
-        <activity android:name=".view.ListFavoriteActivity" />
         <activity android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>

@@ -89,9 +89,9 @@ fun GitHubTopBar(
 					}
 				)
 			}
-			NavRoute.SettingsScreen.route -> {
+			NavRoute.SettingsScreen.route, NavRoute.FavoriteScreen.route -> {
 				CenterAlignedTopAppBar(
-					title = { Text(text = stringResource(id = R.string.setting)) },
+					title = { Text(text = it.destination.route!!) },
 					navigationIcon = {
 						IconButton(onClick = { navigateUp() }) {
 							Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "back")
