@@ -1,13 +1,20 @@
 package com.dicoding.submission.model
 
+import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.RawValue
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
-class User {
+
+@Immutable
+@Parcelize
+data class User(
     val items: @RawValue List<ItemUser>? = null
-}
+) : Parcelable
 
+@Immutable
 data class ItemUser(
     @SerializedName("login")
     @Expose

@@ -98,14 +98,19 @@ dependencies {
 	implementation("io.reactivex.rxjava2:rxjava:2.2.21")
 	implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 
+	//retrofit
 	implementation("com.squareup.retrofit2:retrofit:2.9.0")
 	implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 	implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
+	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
 
 	implementation("androidx.recyclerview:recyclerview:1.2.1")
 
 	implementation("com.github.bumptech.glide:glide:4.14.2")
 	kapt("com.github.bumptech.glide:compiler:4.14.2")
+
+	//gson
+	implementation ("com.google.code.gson:gson:2.10")
 
 	// hilt
 	implementation("com.google.dagger:hilt-android:2.44")
@@ -116,7 +121,6 @@ dependencies {
 
 
 	// compose
-
 	implementation ("androidx.compose.foundation:foundation:$composeVersion")
 	implementation ("androidx.compose.material3:material3:1.1.0-alpha03")
 	implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha03")

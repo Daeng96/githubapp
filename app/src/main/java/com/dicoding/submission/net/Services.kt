@@ -9,9 +9,13 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
+object NetServices {
+    const val BASE_URL = "https://api.github.com"
+}
+
 class Services {
     private val urlBase = "https://api.github.com"
-    private var gitInterface: EndpointInterface
+    private var gitInterface: GithubAppApi
 
     init {
         gitInterface = createService(retrofitInstance())
@@ -24,12 +28,12 @@ class Services {
             .build()
     }
 
-    private fun createService(retrofit: Retrofit): EndpointInterface{
-        return retrofit.create(EndpointInterface::class.java)
+    private fun createService(retrofit: Retrofit): GithubAppApi{
+        return retrofit.create(GithubAppApi::class.java)
     }
 
     fun getUsers(userName: String): Observable<User> {
-        return gitInterface.getUsers(userName)
+        return gitInterface.searchUserByUserName(userName)
     }
 
     fun getDetailUser(userName: String): Observable<DetailUser> {

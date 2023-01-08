@@ -18,7 +18,7 @@ data class Favorites (
     @ColumnInfo(name = "Full Name")var name: String?,
     @ColumnInfo(name = "Company")var company: String?,
     @ColumnInfo(name = "Location")var location: String?,
-    @ColumnInfo(name = "Repository")var publicRepos: Int?,
+    @ColumnInfo(name = "DbRepository")var publicRepos: Int?,
     @ColumnInfo(name = "Followers")var followers: Int?,
     @ColumnInfo(name = "Following")var following: Int?
 )  : Parcelable

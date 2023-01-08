@@ -7,26 +7,32 @@ import androidx.room.RoomDatabase
 
 
 @Database(entities = [Favorites::class], version = 1, exportSchema = false)
-abstract class FavoriteDatabase: RoomDatabase() {
-    abstract fun listUsersDao(): FavoritesDao
+abstract class FavoriteDatabase : RoomDatabase() {
 
-    companion object {
-        @Volatile
-        private var INSTANCE : FavoriteDatabase? = null
+	abstract fun listUsersDao(): FavoritesDao
 
-        fun getDatabase(context: Context): FavoriteDatabase {
-            val temp = INSTANCE
-            if (temp != null) {
-                return temp
-            }
-            synchronized(this){
-                val instance = Room.databaseBuilder(context.applicationContext,FavoriteDatabase::class.java,
-                    "listfavorite.db")
-                    .build()
-                INSTANCE = instance
-                return instance
-            }
+	companion object {
+		@Volatile
+		private var INSTANCE: FavoriteDatabase? = null
 
-        }
-    }
+		fun getDatabase(context: Context): FavoriteDatabase {
+			val temp = INSTANCE
+			if (temp != null) {
+				return temp
+			}
+			synchronized(this) {
+				val instance =
+					Room.databaseBuilder(
+						context,
+						FavoriteDatabase::class.java,
+						"listfavorite.db"
+					)
+						.fallbackToDestructiveMigration()
+						.build()
+				INSTANCE = instance
+				return instance
+			}
+
+		}
+	}
 }
