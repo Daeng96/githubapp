@@ -1,35 +1,36 @@
 package com.dicoding.submission.view.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.dicoding.submission.R
 import com.dicoding.submission.model.ItemUser
-import com.dicoding.submission.viewmodel.SearchResult
+import com.dicoding.submission.model.User
+import com.dicoding.submission.view.tools.ErrorScreen
+import com.dicoding.submission.view.tools.ListItem
+import com.dicoding.submission.view.tools.ProgressIndicator
+import com.dicoding.submission.viewmodel.RequestResult
 
 @Composable
 fun HomeScreen(
-	searchResult: SearchResult?
+	searchResult: RequestResult<User>?
 ) {
 	Box(modifier = Modifier.fillMaxSize()) {
 		when (searchResult) {
-			is SearchResult.OnSearch -> {
-				CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+			is RequestResult.Progress -> {
+				ProgressIndicator()
 			}
-			is SearchResult.OnError -> {
-				Text(text = searchResult.errorMessage, modifier = Modifier.align(Alignment.Center))
+			is RequestResult.Error -> {
+				ErrorScreen()
 			}
-			is SearchResult.OnSuccess -> {
-				UserListContent(itemsUser = searchResult.users)
+			is RequestResult.Success -> {
+				UserListContent(itemsUser = searchResult.data.items ?: emptyList())
 			}
 			else -> {
 				Image(
@@ -47,20 +48,8 @@ private fun UserListContent(
 	itemsUser: List<ItemUser>
 ) {
 	LazyColumn(content = {
-		items(itemsUser) { user ->
-			Row {
-				AsyncImage(
-					model = user.avatarUrl,
-					contentDescription = user.login,
-					modifier = Modifier.size(65.dp)
-				)
-				Column {
-					Text(text = user.login)
-					user.score?.let {
-						Text(text = "Scores: $it")
-					}
-				}
-			}
+		items(items = itemsUser, key = { it.login }) { user ->
+			ListItem(login = user.login, avatarUrl = user.avatarUrl, userScore = user.score)
 		}
 	})
 }

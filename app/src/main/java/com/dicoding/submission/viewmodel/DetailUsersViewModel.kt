@@ -1,6 +1,5 @@
 package com.dicoding.submission.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,47 +20,53 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailUsersViewModel @Inject constructor(
-    private val dbRepository: DbRepository,
-    private val netRepository: NetRepository
-) : ViewModel(){
+	private val dbRepository: DbRepository,
+	private val netRepository: NetRepository
+) : ViewModel() {
 
-    private val compositeDisposable = CompositeDisposable()
+	private val compositeDisposable = CompositeDisposable()
 
-    private val _detailUser = MutableLiveData<DetailUser>()
-    val detailUser : LiveData<DetailUser>
-        get() {
-           return _detailUser
-        }
+	private val _detailUser = MutableLiveData<UserDetailResult>()
+	val detailUser: LiveData<UserDetailResult> = _detailUser
 
-    val allUsers: LiveData<List<Favorites>> = dbRepository.listUsers
+	val allUsers: LiveData<List<Favorites>> = dbRepository.listUsers
 
-    fun isExists (login: String?) : LiveData<List<Favorites>> {
-      return dbRepository.isExists(login)
-    }
+	fun isExists(login: String?): LiveData<List<Favorites>> {
+		return dbRepository.isExists(login)
+	}
 
-    fun insertAll(favorite: Favorites) = viewModelScope.launch(Dispatchers.IO) {
-        dbRepository.insertAll(favorite)
-    }
+	fun insertAll(favorite: Favorites) = viewModelScope.launch(Dispatchers.IO) {
+		dbRepository.insertAll(favorite)
+	}
 
-    fun unFavorite(data: Favorites) = viewModelScope.launch(Dispatchers.IO) {
-        dbRepository.unFavorite(data)
-    }
+	fun unFavorite(data: Favorites) = viewModelScope.launch(Dispatchers.IO) {
+		dbRepository.unFavorite(data)
+	}
 
 
-    fun setDetailUsers(userName: String) {
-        compositeDisposable.add(getDetailUser(userName).subscribe(
-            {
-                _detailUser.postValue(it)
-            }, {
-                throwable -> Log.e("error detail", throwable.message.toString())}
-            )
-        )
-    }
+	fun setDetailUsers(userName: String) {
+		compositeDisposable.add(getDetailUser(userName).subscribe(
+			{
+				_detailUser.postValue(UserDetailResult.OnSuccess(it))
+			}, { throwable -> UserDetailResult.OnError(throwable.message.toString()) }
+		)
+		)
+	}
 
-    private fun getDetailUser(username: String): Observable<DetailUser> {
-        return netRepository.getDetailUserByLogin(username)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
+	private fun getDetailUser(username: String): Observable<DetailUser> {
+		return netRepository.getDetailUserByLogin(username)
+			.subscribeOn(Schedulers.io())
+			.observeOn(AndroidSchedulers.mainThread())
+	}
 
+	override fun onCleared() {
+		super.onCleared()
+		compositeDisposable.clear()
+	}
+}
+
+sealed class UserDetailResult {
+	object OnProgress : UserDetailResult()
+	data class OnSuccess(val user: DetailUser) : UserDetailResult()
+	data class OnError(val errorMsg: String) : UserDetailResult()
 }

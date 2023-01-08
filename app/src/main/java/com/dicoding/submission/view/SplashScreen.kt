@@ -1,31 +1,30 @@
 package com.dicoding.submission.view
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import com.dicoding.submission.R
+import kotlinx.coroutines.delay
 
-@SuppressLint("CustomSplashScreen")
-class SplashScreen : AppCompatActivity() {
+private const val DELAY_MILLIS = 2000L
 
-	private val delayMillis = 2000L
+@Composable
+fun SplashScreen(navigateToHomeScreen: () -> Unit) {
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_splash_screen)
+	LaunchedEffect(key1 = Unit, block = {
+		delay(DELAY_MILLIS)
+		navigateToHomeScreen()
+	})
 
-		supportActionBar?.hide()
-
-		motionLayout.startLayoutAnimation()
-
-		Looper.myLooper()?.let {
-			Handler(it).postDelayed({
-				startActivity(Intent(this, MainActivity::class.java))
-				finish()
-			}, delayMillis)
-		}
+	Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+		Image(
+			painter = painterResource(id = R.drawable.github_logo),
+			contentDescription = "splash logo"
+		)
 	}
 }

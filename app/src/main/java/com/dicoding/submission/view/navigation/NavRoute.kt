@@ -7,4 +7,5 @@ sealed class NavRoute(val route: String) {
 		val UserDetail = "$route/{login}"
 	}
 	object SettingsScreen: NavRoute("setting")
+	object FavoriteScreen: NavRoute("favorite")
 }

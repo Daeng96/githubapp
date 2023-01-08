@@ -34,17 +34,24 @@ class FollowViewModel @Inject constructor(
 	val errorFollowing: LiveData<String> = _errorFlToast
 
 
+	private val _followers = MutableLiveData<RequestResult<ArrayList<Followers>>>(RequestResult.Progress)
+	val followers: LiveData<RequestResult<ArrayList<Followers>>> = _followers
+
+
 	fun setFollower(userName: String) {
 		compositeDisposable.add(
 			getFollowerList(userName).subscribe(
 				{ follower ->
-					_listFollowers.postValue(follower)
+					_followers.postValue(RequestResult.Success(follower))
 				},
 				{ throwable ->
-					_errorToast.postValue(throwable.message)
+					_followers.postValue(RequestResult.Error(throwable.message.toString()))
 				})
 		)
 	}
+
+	private val _following = MutableLiveData<RequestResult<ArrayList<Following>>>(RequestResult.Progress)
+	val following: LiveData<RequestResult<ArrayList<Following>>> = _following
 
 	private fun getFollowerList(userName: String): Observable<ArrayList<Followers>> {
 		return netRepository.getFollower(userName)
@@ -55,10 +62,10 @@ class FollowViewModel @Inject constructor(
 	fun setFollowing(userName: String) {
 		compositeDisposable.add(
 			getFollowingList(userName).subscribe({ follow ->
-				_listFollowing.postValue(follow)
+				_following.postValue(RequestResult.Success(data = follow))
 			},
 				{ throwable ->
-					_errorFlToast.postValue(throwable.message)
+					_following.postValue(RequestResult.Error(message = throwable.message.toString()))
 				})
 		)
 	}
@@ -68,5 +75,5 @@ class FollowViewModel @Inject constructor(
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
 	}
-
 }
+

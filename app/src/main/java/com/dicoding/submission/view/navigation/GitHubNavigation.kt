@@ -8,15 +8,18 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.dicoding.submission.model.User
 import com.dicoding.submission.view.home.HomeScreen
 import com.dicoding.submission.view.navigation.NavRoute
+import com.dicoding.submission.viewmodel.RequestResult
 import com.dicoding.submission.viewmodel.SearchResult
 
 @Composable
 fun GitHubNavigation(
 	navController: NavHostController,
 	paddingValues: PaddingValues,
-	searchResult: SearchResult?
+	searchResult: RequestResult<User>?
 ) {
 
 	NavHost(
@@ -28,15 +31,23 @@ fun GitHubNavigation(
 	) {
 
 		composable(route = NavRoute.SplashScreen.route) {
-
+			SplashScreen(navigateToHomeScreen = { navController.navigate(NavRoute.HomeScreen.route) })
 		}
 		composable(route = NavRoute.HomeScreen.route) {
-			HomeScreen()
+			HomeScreen(searchResult = searchResult)
 		}
-		composable(route = NavRoute.HomeScreen.UserDetail) {
-
+		composable(
+			route = NavRoute.HomeScreen.UserDetail,
+			arguments = listOf(navArgument("login") {})
+		) {
+			val login = it.arguments?.getString("login") as String
+			DetailUserScreen(login = login)
 		}
 		composable(route = NavRoute.SettingsScreen.route) {
+
+		}
+
+		composable(NavRoute.FavoriteScreen.route) {
 
 		}
 	}

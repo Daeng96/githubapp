@@ -3,7 +3,6 @@ package com.dicoding.submission.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.submission.model.ItemUser
 import com.dicoding.submission.model.User
 import com.dicoding.submission.repository.NetRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +19,8 @@ class SearchViewModel @Inject constructor(
 
 	private val compositeDisposable = CompositeDisposable()
 
-	private val _searchResult = MutableLiveData<SearchResult?>()
-	val searchUsersResult: LiveData<SearchResult?> = _searchResult
+	private val _searchResult = MutableLiveData<RequestResult<User>?>(null)
+	val searchUsersResult: LiveData<RequestResult<User>?> = _searchResult
 
 
 	//get users
@@ -33,24 +32,17 @@ class SearchViewModel @Inject constructor(
 
 	//set user
 	fun setUser(userName: String) {
-		_searchResult.postValue(SearchResult.OnSearch)
 		compositeDisposable.add(
 			getUsers(userName).subscribe({ users ->
 				if (users.items.isNullOrEmpty()) {
-					_searchResult.postValue(SearchResult.OnError("User Not Found"))
+					_searchResult.postValue(RequestResult.Error("user not found"))
 				} else {
-					_searchResult.postValue(SearchResult.OnSuccess(users.items))
+					_searchResult.postValue(RequestResult.Success(users))
 				}
 			}, { throwable ->
-				_searchResult.postValue(SearchResult.OnError(throwable.message.toString()))
+				_searchResult.postValue(RequestResult.Error(throwable.message.toString()))
 			}
 			)
 		)
 	}
-}
-
-sealed class SearchResult {
-	object OnSearch : SearchResult()
-	data class OnSuccess(val users: List<ItemUser>) : SearchResult()
-	data class OnError(val errorMessage: String) : SearchResult()
 }
