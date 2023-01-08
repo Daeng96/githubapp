@@ -10,7 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.dicoding.submission.view.GitHubNavigation
+import com.dicoding.submission.view.navigation.GitHubNavigation
+import com.dicoding.submission.view.navigation.NavRoute
 import com.dicoding.submission.viewmodel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,7 +20,7 @@ fun GitHubScaffold() {
 
 	val navHostController = rememberNavController()
 	val navBackStackEntry by navHostController.currentBackStackEntryAsState()
-	val searchViewModel : SearchViewModel = hiltViewModel()
+	val searchViewModel: SearchViewModel = hiltViewModel()
 	val searchResult = searchViewModel.searchUsersResult.observeAsState().value
 
 	Scaffold(
@@ -28,9 +29,9 @@ fun GitHubScaffold() {
 			GitHubTopBar(
 				navBackStackEntry = navBackStackEntry,
 				navigateUp = { navHostController.navigateUp() },
-				onSearchingUser = { userName ->
-					searchViewModel.setUser(userName)
-				}
+				onSearchingUser = { userName -> searchViewModel.setUser(userName) },
+				navigateToSetting = { navHostController.navigate(NavRoute.SettingsScreen.route) },
+				navigateToFavorite = { navHostController.navigate(NavRoute.FavoriteScreen.route) }
 			)
 		}
 	) {

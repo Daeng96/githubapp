@@ -4,7 +4,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +23,8 @@ import com.dicoding.submission.view.navigation.NavRoute
 fun GitHubTopBar(
 	navBackStackEntry: NavBackStackEntry?,
 	onSearchingUser: (String) -> Unit,
+	navigateToFavorite: () -> Unit,
+	navigateToSetting: () -> Unit,
 	navigateUp: () -> Unit
 ) {
 	navBackStackEntry?.let {
@@ -58,10 +62,17 @@ fun GitHubTopBar(
 					},
 					actions = {
 						if (!isSearch) {
-							IconButton(onClick = {
-								isSearch = true
-							}) {
+
+							IconButton(onClick = { isSearch = true }) {
 								Icon(imageVector = Icons.Outlined.Search, contentDescription = "Search")
+							}
+
+							IconButton(onClick = navigateToFavorite) {
+								Icon(imageVector = Icons.Outlined.Favorite, contentDescription = "Favorite")
+							}
+
+							IconButton(onClick = navigateToSetting) {
+								Icon(imageVector = Icons.Outlined.Settings, contentDescription = "Setting")
 							}
 						}
 					}

@@ -1,4 +1,4 @@
-package com.dicoding.submission.view
+package com.dicoding.submission.view.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,10 +10,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.dicoding.submission.model.User
+import com.dicoding.submission.view.DetailUserScreen
+import com.dicoding.submission.view.ListFavoritesScreen
+import com.dicoding.submission.view.SplashScreen
 import com.dicoding.submission.view.home.HomeScreen
-import com.dicoding.submission.view.navigation.NavRoute
 import com.dicoding.submission.viewmodel.RequestResult
-import com.dicoding.submission.viewmodel.SearchResult
 
 @Composable
 fun GitHubNavigation(
@@ -48,7 +49,7 @@ fun GitHubNavigation(
 		}
 
 		composable(NavRoute.FavoriteScreen.route) {
-
+			ListFavoritesScreen()
 		}
 	}
 }

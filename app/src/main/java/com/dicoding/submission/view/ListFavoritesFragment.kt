@@ -9,7 +9,12 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,12 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.submission.R
 import com.dicoding.submission.adapter.FavoriteAdapter
 import com.dicoding.submission.db.Favorites
+import com.dicoding.submission.view.tools.ListItem
 import com.dicoding.submission.viewmodel.DetailUsersViewModel
 import com.dicoding.submission.widget.MyWidget
 
 class ListFavoritesFragment : Fragment() {
 
-	private lateinit var adapterFavorites : FavoriteAdapter
+	private lateinit var adapterFavorites: FavoriteAdapter
 	private lateinit var favoriteViewModel: DetailUsersViewModel
 
 	override fun onCreateView(
@@ -80,4 +86,19 @@ class ListFavoritesFragment : Fragment() {
 		}
 
 	}
+}
+
+
+@Composable
+fun ListFavoritesScreen() {
+
+	val detailUsersViewModel: DetailUsersViewModel = hiltViewModel()
+	val favorites = detailUsersViewModel.allUsers.observeAsState(emptyList()).value
+
+	LazyColumn(content = {
+		items(items = favorites) { user ->
+			ListItem(login = user.login!!, avatarUrl = user.avatarUrl)
+		}
+	})
+
 }
