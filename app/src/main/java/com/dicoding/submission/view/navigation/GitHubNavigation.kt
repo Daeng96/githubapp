@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.dicoding.submission.model.User
 import com.dicoding.submission.view.DetailUserScreen
 import com.dicoding.submission.view.ListFavoritesScreen
+import com.dicoding.submission.view.SettingScreen
 import com.dicoding.submission.view.SplashScreen
 import com.dicoding.submission.view.home.HomeScreen
 import com.dicoding.submission.viewmodel.RequestResult
@@ -45,7 +46,7 @@ fun GitHubNavigation(
 			DetailUserScreen(login = login)
 		}
 		composable(route = NavRoute.SettingsScreen.route) {
-
+			SettingScreen()
 		}
 
 		composable(NavRoute.FavoriteScreen.route) {
