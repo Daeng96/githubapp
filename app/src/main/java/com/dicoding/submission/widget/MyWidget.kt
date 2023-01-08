@@ -12,7 +12,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.TaskStackBuilder
 import com.dicoding.submission.R
-import com.dicoding.submission.view.DetailUserActivity
+import com.dicoding.submission.view.MainActivity
 
 class MyWidget : AppWidgetProvider() {
 
@@ -86,11 +86,13 @@ internal fun updateAppWidget(
 	val intent = Intent(context, MyRemoteViewsServices::class.java)
 	views.setRemoteAdapter(R.id.list_view, intent)
 
-	val listFav = Intent(context, ListFavoriteActivity::class.java)
+	val listFav = Intent(context, MainActivity::class.java)
+//	val listFav = Intent(context, ListFavoriteActivity::class.java)
 	val listFavPending = PendingIntent.getActivity(context, 0, listFav, 0)
 	views.setOnClickPendingIntent(R.id.arrow_to_list, listFavPending)
 
-	val detail = Intent(context, DetailUserActivity::class.java)
+//	val detail = Intent(context, DetailUserActivity::class.java)
+	val detail = Intent(context, MainActivity::class.java)
 	val clickTemplate = TaskStackBuilder.create(context)
 		.addNextIntentWithParentStack(detail)
 		.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)

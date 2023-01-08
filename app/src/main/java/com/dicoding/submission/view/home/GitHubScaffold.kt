@@ -1,5 +1,6 @@
 package com.dicoding.submission.view.home
 
+import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -16,7 +17,7 @@ import com.dicoding.submission.viewmodel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GitHubScaffold() {
+fun Activity.GitHubScaffold() {
 
 	val navHostController = rememberNavController()
 	val navBackStackEntry by navHostController.currentBackStackEntryAsState()
@@ -29,7 +30,7 @@ fun GitHubScaffold() {
 			GitHubTopBar(
 				navBackStackEntry = navBackStackEntry,
 				navigateUp = { navHostController.navigateUp() },
-				onSearchingUser = { userName -> searchViewModel.setUser(userName) },
+				onSearchingUser = { userName -> searchViewModel.setUser(userName.trim()) },
 				navigateToSetting = { navHostController.navigate(NavRoute.SettingsScreen.route) },
 				navigateToFavorite = { navHostController.navigate(NavRoute.FavoriteScreen.route) }
 			)
@@ -38,7 +39,8 @@ fun GitHubScaffold() {
 		GitHubNavigation(
 			navController = navHostController,
 			paddingValues = it,
-			searchResult = searchResult
+			searchResult = searchResult,
+			onBackPressed = { finish() }
 		)
 	}
 }

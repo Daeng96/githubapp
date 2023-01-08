@@ -1,21 +1,27 @@
 package com.dicoding.submission.view
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -26,72 +32,111 @@ import com.dicoding.submission.R
 import com.dicoding.submission.model.DetailUser
 import com.dicoding.submission.theme.Typography
 import com.dicoding.submission.view.tools.ErrorScreen
+import com.dicoding.submission.view.tools.GithubTabRowDefault
+import com.dicoding.submission.view.tools.GithubTabRowDefault.pagerM3TabIndicatorOffset
 import com.dicoding.submission.view.tools.ListItem
 import com.dicoding.submission.view.tools.ProgressIndicator
 import com.dicoding.submission.viewmodel.DetailUsersViewModel
 import com.dicoding.submission.viewmodel.FollowViewModel
 import com.dicoding.submission.viewmodel.RequestResult
-import com.dicoding.submission.viewmodel.UserDetailResult
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun DetailUserScreen(
-	login: String
+	login: String,
+	navigateToDetail: (String) -> Unit
 ) {
 	val detailUsersViewModel: DetailUsersViewModel = hiltViewModel()
 
-	SideEffect {
+	LaunchedEffect(key1 = Unit) {
 		detailUsersViewModel.setDetailUsers(login)
 	}
+	val isExists by detailUsersViewModel.isExists(login).observeAsState(false)
 
 	val userDetailResult =
-		detailUsersViewModel.detailUser.observeAsState(UserDetailResult.OnProgress).value
+		detailUsersViewModel.detailUser.observeAsState(RequestResult.Progress).value
 
 	Box(modifier = Modifier.fillMaxSize()) {
 		when (userDetailResult) {
-			is UserDetailResult.OnProgress -> {
+			is RequestResult.Progress -> {
 				ProgressIndicator()
 			}
-			is UserDetailResult.OnSuccess -> {
-				DetailUserContent(user = userDetailResult.user)
+			is RequestResult.Success -> {
+				DetailUserContent(user = userDetailResult.data, navigateToDetail = navigateToDetail)
+				ExtendedFloatingActionButton(
+					onClick = {
+						if (isExists) {
+							detailUsersViewModel.unFavorite(userDetailResult.data.asFavorites())
+						} else {
+							detailUsersViewModel.insertAll(userDetailResult.data.asFavorites())
+						}
+					},
+					modifier = Modifier
+						.align(Alignment.BottomEnd)
+						.padding(16.dp)
+				) {
+
+					Icon(
+						imageVector = if (!isExists) Icons.Outlined.FavoriteBorder else Icons.Default.Favorite,
+						contentDescription = null
+					)
+					Text(text = stringResource(id = R.string.btn_favorited))
+				}
 			}
-			is UserDetailResult.OnError -> {
-				ErrorScreen()
+			is RequestResult.Error -> {
+				ErrorScreen(userDetailResult.message)
 			}
 		}
 	}
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun DetailUserContent(
 	user: DetailUser,
+	navigateToDetail: (String) -> Unit
 ) {
 	val followViewModel: FollowViewModel = hiltViewModel()
-	SideEffect {
+	LaunchedEffect(key1 = Unit) {
 		followViewModel.setFollowing(user.login)
 		followViewModel.setFollower(user.login)
 	}
 	val pagerState = rememberPagerState()
-	val tabTitle = listOf(
-		stringResource(id = R.string.follower),
-		stringResource(id = R.string.following)
-	)
+	val tabTitle =
+		listOf(
+			stringResource(id = R.string.follower),
+			stringResource(id = R.string.following)
+		)
+
 	val coroutineScope = rememberCoroutineScope()
 
-	Column(modifier = Modifier.fillMaxSize()) {
-		Row(modifier = Modifier.fillMaxWidth()) {
-			Column(modifier = Modifier.fillMaxWidth(0.4f)) {
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.padding(horizontal = 16.dp),
+		verticalArrangement = Arrangement.spacedBy(8.dp)
+	) {
+
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(top = 16.dp)
+				.verticalScroll(ScrollState(0)),
+			horizontalArrangement = Arrangement.spacedBy(8.dp)
+		) {
+			Column(
+				modifier = Modifier.fillMaxWidth(0.3f),
+				verticalArrangement = Arrangement.spacedBy(4.dp),
+				horizontalAlignment = Alignment.CenterHorizontally
+			) {
 				AsyncImage(model = user.avatarUrl, contentDescription = user.login)
 				Text(text = user.name ?: "unknown")
 			}
 
-			Column(modifier = Modifier.fillMaxWidth(0.6f)) {
+			Column(modifier = Modifier.fillMaxWidth(0.7f)) {
 				RightPanel(
 					modifier = Modifier.fillMaxWidth(),
 					icon = Icons.Default.Person,
@@ -104,25 +149,26 @@ private fun DetailUserContent(
 					title = user.location ?: "unknown"
 				)
 
-				FlowRow(modifier = Modifier.fillMaxWidth(), mainAxisSpacing = 8.dp) {
+				FlowRow(modifier = Modifier.fillMaxWidth()) {
 					RightBottomPanel(
 						modifier = Modifier.fillMaxWidth(),
 						title = stringResource(id = R.string.follower),
-						subtitle = user.followers.toString()
+						subtitle = "${user.followers}"
 					)
 					RightBottomPanel(
 						modifier = Modifier.fillMaxWidth(),
 						title = stringResource(id = R.string.following),
-						subtitle = user.following.toString()
+						subtitle = "${user.following}"
 					)
 					RightBottomPanel(
 						modifier = Modifier.fillMaxWidth(),
 						title = stringResource(id = R.string.repo),
-						subtitle = user.publicRepos.toString()
+						subtitle = "${user.publicRepos}"
 					)
 				}
 			}
 		}
+
 		Text(
 			text = user.company ?: "unknown",
 			modifier = Modifier.fillMaxWidth(),
@@ -130,23 +176,48 @@ private fun DetailUserContent(
 			style = Typography.titleLarge
 		)
 
-		TabRow(selectedTabIndex = pagerState.currentPage) {
+		TabRow(
+			selectedTabIndex = pagerState.currentPage,
+			indicator = { pos ->
+				GithubTabRowDefault.Indicator(
+					modifier = Modifier.pagerM3TabIndicatorOffset(pagerState = pagerState, pos),
+					height = 2.dp
+				)
+			},
+			containerColor = Color.Transparent,
+			divider = {}
+		) {
+
 			tabTitle.forEachIndexed { index, title ->
-				Tab(selected = pagerState.currentPage == index, onClick = {
-					coroutineScope.launch {
-						pagerState.scrollToPage(index)
-					}
-				}) {
-					Text(text = title)
+				Tab(
+					selected = pagerState.currentPage == index,
+					onClick = {
+						coroutineScope.launch {
+							pagerState.scrollToPage(index)
+						}
+					},
+					modifier = Modifier.heightIn(min = 48.dp),
+					selectedContentColor = MaterialTheme.colorScheme.primary,
+					unselectedContentColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+				) {
+					Text(
+						text = title.removeSuffix(":"),
+						modifier = Modifier.padding(vertical = 8.dp)
+					)
 				}
 			}
 		}
 
-		Box(modifier = Modifier.fillMaxWidth()) {
-			HorizontalPager(
-				count = 2,
-				state = pagerState
-			) { page ->
+
+		HorizontalPager(
+			pageCount = 2,
+			state = pagerState,
+			verticalAlignment = Alignment.Top,
+			modifier = Modifier.fillMaxHeight(),
+			pageSpacing = 16.dp,
+			contentPadding = PaddingValues(horizontal = 16.dp)
+		) { page ->
+			Box(modifier = Modifier.fillMaxWidth()) {
 				when (page) {
 					0 -> {
 						val followers =
@@ -154,17 +225,21 @@ private fun DetailUserContent(
 						when (followers) {
 							is RequestResult.Success -> {
 								val data = followers.data
-								LazyColumn(content = {
-									items(items = data) { following ->
-										ListItem(
-											login = following.login!!,
-											avatarUrl = following.avatarUrl
-										)
-									}
-								})
+								LazyColumn(
+									modifier = Modifier.fillMaxSize(),
+									verticalArrangement = Arrangement.spacedBy(4.dp),
+									content = {
+										items(items = data) { following ->
+											ListItem(
+												login = following.login!!,
+												avatarUrl = following.avatarUrl,
+												itemOnClick = { navigateToDetail(it) }
+											)
+										}
+									})
 							}
 							is RequestResult.Error -> {
-								ErrorScreen()
+								ErrorScreen(followers.message)
 							}
 							is RequestResult.Progress -> {
 								RequestResult.Progress
@@ -177,17 +252,21 @@ private fun DetailUserContent(
 						when (following) {
 							is RequestResult.Success -> {
 								val data = following.data
-								LazyColumn(content = {
-									items(items = data) { following ->
-										ListItem(
-											login = following.login!!,
-											avatarUrl = following.avatarUrl
-										)
-									}
-								})
+								LazyColumn(
+									modifier = Modifier.fillMaxSize(),
+									verticalArrangement = Arrangement.spacedBy(4.dp),
+									content = {
+										items(items = data) { following ->
+											ListItem(
+												login = following.login!!,
+												avatarUrl = following.avatarUrl,
+												itemOnClick = { navigateToDetail(it) }
+											)
+										}
+									})
 							}
 							is RequestResult.Error -> {
-								ErrorScreen()
+								ErrorScreen(following.message)
 							}
 							is RequestResult.Progress -> {
 								RequestResult.Progress
@@ -198,6 +277,7 @@ private fun DetailUserContent(
 			}
 		}
 	}
+
 }
 
 @Composable

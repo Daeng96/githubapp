@@ -1,9 +1,10 @@
 package com.dicoding.submission.model
 
+import androidx.compose.runtime.Immutable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-
+@Immutable
 class Following  {
     @SerializedName("login")
     @Expose

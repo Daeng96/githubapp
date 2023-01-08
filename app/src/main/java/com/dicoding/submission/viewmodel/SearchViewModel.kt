@@ -32,6 +32,7 @@ class SearchViewModel @Inject constructor(
 
 	//set user
 	fun setUser(userName: String) {
+		_searchResult.postValue(RequestResult.Progress)
 		compositeDisposable.add(
 			getUsers(userName).subscribe({ users ->
 				if (users.items.isNullOrEmpty()) {

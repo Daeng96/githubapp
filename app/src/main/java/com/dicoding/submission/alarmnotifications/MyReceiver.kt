@@ -38,9 +38,13 @@ class AlarmReceiver : BroadcastReceiver() {
 			this.set(Calendar.MINUTE, 0)
 			this.set(Calendar.SECOND, 0)
 		}
+
+		val time =
+			if (System.currentTimeMillis() >= calendar.timeInMillis) calendar.timeInMillis + AlarmManager.INTERVAL_DAY else calendar.timeInMillis
+
 		alarmMgr?.setInexactRepeating(
 			AlarmManager.RTC_WAKEUP,
-			calendar.timeInMillis,
+			time,
 			AlarmManager.INTERVAL_DAY,
 			alarmIntent
 		)

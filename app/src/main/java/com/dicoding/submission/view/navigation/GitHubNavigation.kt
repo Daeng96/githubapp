@@ -21,7 +21,8 @@ import com.dicoding.submission.viewmodel.RequestResult
 fun GitHubNavigation(
 	navController: NavHostController,
 	paddingValues: PaddingValues,
-	searchResult: RequestResult<User>?
+	searchResult: RequestResult<User>?,
+	onBackPressed: () -> Unit
 ) {
 
 	NavHost(
@@ -36,14 +37,27 @@ fun GitHubNavigation(
 			SplashScreen(navigateToHomeScreen = { navController.navigate(NavRoute.HomeScreen.route) })
 		}
 		composable(route = NavRoute.HomeScreen.route) {
-			HomeScreen(searchResult = searchResult)
+			HomeScreen(
+				searchResult = searchResult,
+				onBackPressed = onBackPressed,
+				itemOnClick = {
+					navController.navigate(NavRoute.HomeScreen.navigateToDetail(it)) {
+						launchSingleTop = true
+						popUpTo(NavRoute.HomeScreen.route) {
+							saveState = true
+						}
+						restoreState = true
+					}
+				})
 		}
 		composable(
 			route = NavRoute.HomeScreen.UserDetail,
 			arguments = listOf(navArgument("login") {})
 		) {
 			val login = it.arguments?.getString("login") as String
-			DetailUserScreen(login = login)
+			DetailUserScreen(login = login, navigateToDetail = { us ->
+				navController.navigate(NavRoute.HomeScreen.navigateToDetail(us))
+			})
 		}
 		composable(route = NavRoute.SettingsScreen.route) {
 			SettingScreen()

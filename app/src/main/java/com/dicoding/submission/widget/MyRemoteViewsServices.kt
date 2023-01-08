@@ -17,7 +17,7 @@ import android.widget.RemoteViewsService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.submission.R
-import com.dicoding.submission.view.DetailUserActivity
+import com.dicoding.submission.view.MainActivity
 
 class MyRemoteViewsServices : RemoteViewsService(){
 	override fun onGetViewFactory(p0: Intent): RemoteViewsFactory {
@@ -93,7 +93,7 @@ class MyRemoteViewsServices : RemoteViewsService(){
 
 			rv.setTextViewText(R.id.text_widget, cursor.getString(1))
 
-			myIntent.putExtra(DetailUserActivity.EXTRA_PERSON, cursor.getString(1))
+			myIntent.putExtra(MainActivity.EXTRA_PERSON, cursor.getString(1))
 			rv.setOnClickFillInIntent(R.id.container_list, myIntent)
 
 			return rv

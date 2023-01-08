@@ -2,45 +2,37 @@ package com.dicoding.submission.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 private val DarkColorScheme = darkColorScheme(
-	primary = GreenDark80,
-	onPrimary = GreenLight,
+	primary = Color(0xFFFF5722),
+	onPrimary = Color(0xFFCDC3DE),
 	secondary = Color(0xFF011B19),
-	secondaryContainer = Color(0xFF02100F), // ayat 2
-
-
-	tertiary = Color(0xFFCFDAD9),
-	tertiaryContainer = Color(0xFF323232),
-
+	secondaryContainer = Color(0xFF764702),
+	tertiary = Color(0xFFFABC62),
+	tertiaryContainer = Color(0xFF885101),
+	background =  Color(0xFF0D1010),
 	inversePrimary = GreenLight,
-	primaryContainer = GreenDark100,
-	onPrimaryContainer = GreenLight,
-
-	surface = Color(0xFF011B19) // ayat 1
+	primaryContainer = Color(0xFFF1DCBD),
+	onPrimaryContainer = Color(0xFFFF9800),
+	surface = Color(0xFF101313),
+	surfaceVariant = Color(0xFF161515)
 )
 
 private val LightColorScheme = lightColorScheme(
 	background = CreamLight,
 	onBackground = Color.Black,
-	primary = GreenDark,
-	onPrimary = GreenLight100,
+	primary = Color(0xFF03A9F4),
+	onPrimary = Color(0xFFE3EFF4),
 
-	secondary = Beige,
-	secondaryContainer = Cream, // ayat 2
+	secondary = Color(0xFF2196F3),
+	secondaryContainer = Color(0xFFC2DFF6),
 
 	primaryContainer = GreenDark100,
 	onPrimaryContainer = GreenLight,
@@ -49,9 +41,9 @@ private val LightColorScheme = lightColorScheme(
 	tertiary = CreamDark,
 	tertiaryContainer = Cream,
 
-	surfaceVariant = Color.White,
-	onSurfaceVariant = Color.DarkGray,
-	surface = Beige, // ayat 1
+	surfaceVariant = Color(0xFFE0E8EC),
+	onSurfaceVariant = Color(0xFF03A9F4),
+	surface = Beige,
 	onSurface = Color.Black,
 	surfaceTint = Color.Black,
 
@@ -67,103 +59,34 @@ private val LightColorScheme = lightColorScheme(
 	*/
 )
 
-private val SpecialLightColorScheme = lightColorScheme(
-	background = bgSE,
-	onBackground = onBgSE,
-	primary = primarySE,
-	onPrimary = onPrimarySE,
-
-	secondary = ayatBgSE,
-	secondaryContainer = ayat1BgSE, // ayat 2
-
-	primaryContainer = primaryContainerSE,
-	onPrimaryContainer = onPrimaryContainerSE,
-	inversePrimary = GreenLight,
-
-	tertiary = CreamDark,
-	tertiaryContainer = Cream,
-
-	surfaceVariant = surfaceVariantSE,
-	onSurfaceVariant = onSurfaceVariantSE,
-	surface = surfaceSE, // ayat 1
-	onSurface = onSurfaceSE,
-	surfaceTint = onBgSE
-	/* Other default colors to override
-	background = Color(0xFFFFFBFE),
-	surface = Color(0xFFFFFBFE),
-	onPrimary = Color.White,
-	onSecondary = Color.White,
-	onTertiary = Color.White,
-	onBackground = Color(0xFF1C1B1F),
-	onSurface = Color(0xFF1C1B1F),
-	*/
-)
-
-enum class Theme(val icon: ImageVector, val price: Double? = null) {
-	LIGHT(Icons.Default.LightMode),
-	DARK(Icons.Default.DarkMode),
-	SPECIAL(Icons.Outlined.Favorite, 0.64),
-	DYNAMIC_DARK(Icons.Default.DarkMode),
-	DYNAMIC_LIGHT(Icons.Default.LightMode),
-	SYSTEM(Icons.Default.PhoneAndroid)
-}
-
 @Composable
 fun GithubMaterialTheme(
 	darkTheme: Boolean = isSystemInDarkTheme(),
-	themeMode: Theme,
 	content: @Composable () -> Unit
 ) {
 
 	val uiController = rememberSystemUiController()
-	val appColorScheme = when (themeMode) {
-		Theme.LIGHT -> {
-			uiController.setUi()
+
+	val colors = if (!darkTheme) {
+		uiController.setUi(darkIcon = true, true)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			val context = LocalContext.current
+			dynamicLightColorScheme(context)
+		} else {
 			LightColorScheme
 		}
-		Theme.DARK -> {
-			uiController.setUi(navDarkIcon = false)
+	} else {
+		uiController.setUi(darkIcon = false, false)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			val context = LocalContext.current
+			dynamicDarkColorScheme(context)
+		} else {
 			DarkColorScheme
-		}
-		Theme.DYNAMIC_LIGHT -> {
-			uiController.setUi(true)
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-				val context = LocalContext.current
-				dynamicLightColorScheme(context)
-			} else {
-				LightColorScheme
-			}
-		}
-		Theme.DYNAMIC_DARK -> {
-			uiController.setUi()
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-				val context = LocalContext.current
-				dynamicDarkColorScheme(context)
-			} else {
-				DarkColorScheme
-			}
-		}
-
-		Theme.SPECIAL -> {
-			uiController.setUi()
-			SpecialLightColorScheme
-		}
-
-		Theme.SYSTEM -> {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-				uiController.setUi(!darkTheme, navDarkIcon = !darkTheme)
-				val context = LocalContext.current
-				if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-			} else {
-				uiController.setUi(navDarkIcon = !darkTheme)
-				if (darkTheme) DarkColorScheme else LightColorScheme
-			}
 		}
 	}
 
-
 	MaterialTheme(
-		colorScheme = appColorScheme ,
+		colorScheme = colors ,
 		shapes = Shapes(),
 		typography = Typography
 	) {

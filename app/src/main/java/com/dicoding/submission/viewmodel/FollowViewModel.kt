@@ -20,25 +20,12 @@ class FollowViewModel @Inject constructor(
 
 	private val compositeDisposable = CompositeDisposable()
 
-	private val _listFollowing = MutableLiveData<ArrayList<Following>>()
-	val listFollowing: LiveData<ArrayList<Following>> = _listFollowing
-
-	private val _listFollowers = MutableLiveData<ArrayList<Followers>>()
-	val listFollowers: LiveData<ArrayList<Followers>> = _listFollowers
-
-
-	private val _errorToast = MutableLiveData<String>()
-	val errorToast: LiveData<String> = _errorToast
-
-	private val _errorFlToast = MutableLiveData<String>()
-	val errorFollowing: LiveData<String> = _errorFlToast
-
-
 	private val _followers = MutableLiveData<RequestResult<ArrayList<Followers>>>(RequestResult.Progress)
 	val followers: LiveData<RequestResult<ArrayList<Followers>>> = _followers
 
 
 	fun setFollower(userName: String) {
+		_followers.postValue(RequestResult.Progress)
 		compositeDisposable.add(
 			getFollowerList(userName).subscribe(
 				{ follower ->
@@ -60,6 +47,7 @@ class FollowViewModel @Inject constructor(
 	}
 
 	fun setFollowing(userName: String) {
+		_following.postValue(RequestResult.Progress)
 		compositeDisposable.add(
 			getFollowingList(userName).subscribe({ follow ->
 				_following.postValue(RequestResult.Success(data = follow))

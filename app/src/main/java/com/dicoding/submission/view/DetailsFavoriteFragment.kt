@@ -11,8 +11,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.submission.R
 import com.dicoding.submission.db.Favorites
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.details_favorite_fragment.*
 
+/*
 class DetailsFavoriteFragment : BottomSheetDialogFragment() {
 
 	private lateinit var listFavorites: Favorites
@@ -66,4 +66,4 @@ class DetailsFavoriteFragment : BottomSheetDialogFragment() {
 		}
 	}
 
-}
+}*/

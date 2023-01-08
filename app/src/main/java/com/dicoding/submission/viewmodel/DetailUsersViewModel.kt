@@ -1,9 +1,6 @@
 package com.dicoding.submission.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dicoding.submission.db.Favorites
 import com.dicoding.submission.model.DetailUser
 import com.dicoding.submission.repository.DbRepository
@@ -26,14 +23,13 @@ class DetailUsersViewModel @Inject constructor(
 
 	private val compositeDisposable = CompositeDisposable()
 
-	private val _detailUser = MutableLiveData<UserDetailResult>()
-	val detailUser: LiveData<UserDetailResult> = _detailUser
+	private val _detailUser = MutableLiveData<RequestResult<DetailUser>>()
+	val detailUser: LiveData<RequestResult<DetailUser>> = _detailUser
 
 	val allUsers: LiveData<List<Favorites>> = dbRepository.listUsers
 
-	fun isExists(login: String?): LiveData<List<Favorites>> {
-		return dbRepository.isExists(login)
-	}
+	fun isExists(login: String?)  = dbRepository.isExists(login).map { it.isNotEmpty() }
+
 
 	fun insertAll(favorite: Favorites) = viewModelScope.launch(Dispatchers.IO) {
 		dbRepository.insertAll(favorite)
@@ -45,11 +41,13 @@ class DetailUsersViewModel @Inject constructor(
 
 
 	fun setDetailUsers(userName: String) {
-		compositeDisposable.add(getDetailUser(userName).subscribe(
-			{
-				_detailUser.postValue(UserDetailResult.OnSuccess(it))
-			}, { throwable -> UserDetailResult.OnError(throwable.message.toString()) }
-		)
+		_detailUser.postValue(RequestResult.Progress)
+		compositeDisposable.add(
+			getDetailUser(userName).subscribe(
+				{
+					_detailUser.postValue(RequestResult.Success(it))
+				},
+				{ throwable -> _detailUser.postValue(RequestResult.Error(throwable.message.toString())) })
 		)
 	}
 
@@ -63,10 +61,4 @@ class DetailUsersViewModel @Inject constructor(
 		super.onCleared()
 		compositeDisposable.clear()
 	}
-}
-
-sealed class UserDetailResult {
-	object OnProgress : UserDetailResult()
-	data class OnSuccess(val user: DetailUser) : UserDetailResult()
-	data class OnError(val errorMsg: String) : UserDetailResult()
 }

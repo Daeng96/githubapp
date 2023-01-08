@@ -12,8 +12,8 @@ import kotlinx.android.parcel.Parcelize
 data class Favorites (
     @PrimaryKey
     @ColumnInfo(name = "_ID")var _id: Int?,
-    @ColumnInfo(name = "Login")var login: String?,
-    @ColumnInfo(name = "Avatar Url")var avatarUrl: String?,
+    @ColumnInfo(name = "Login")var login: String,
+    @ColumnInfo(name = "Avatar Url")var avatarUrl: String,
     @ColumnInfo(name = "HTML Url")var htmlUrl: String?,
     @ColumnInfo(name = "Full Name")var name: String?,
     @ColumnInfo(name = "Company")var company: String?,
