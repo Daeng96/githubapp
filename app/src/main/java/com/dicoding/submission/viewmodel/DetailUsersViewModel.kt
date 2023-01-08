@@ -1,16 +1,12 @@
 package com.dicoding.submission.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.submission.db.FavoriteDatabase
 import com.dicoding.submission.db.Favorites
 import com.dicoding.submission.model.DetailUser
-import com.dicoding.submission.net.Services
 import com.dicoding.submission.repository.DbRepository
 import com.dicoding.submission.repository.NetRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
