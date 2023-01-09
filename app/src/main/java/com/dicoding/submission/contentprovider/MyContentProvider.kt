@@ -13,7 +13,7 @@ class MyContentProvider : ContentProvider() {
 	private lateinit var favoriteDatabase: FavoriteDatabase
 
 	companion object {
-		const val CODE_ALLDATA = 1
+		const val CODE_ALL_DATA = 1
 		const val CODE_DATA_ID = 2
 		val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
@@ -27,7 +27,7 @@ class MyContentProvider : ContentProvider() {
 
 
 		init {
-			uriMatcher.addURI(AUTHORITY, TABLE_NAME, CODE_ALLDATA)
+			uriMatcher.addURI(AUTHORITY, TABLE_NAME, CODE_ALL_DATA)
 			uriMatcher.addURI(AUTHORITY, "$TABLE_NAME/#", CODE_DATA_ID)
 		}
 	}
@@ -43,7 +43,7 @@ class MyContentProvider : ContentProvider() {
 		selectionArgs: Array<String>?, sortOrder: String?
 	): Cursor? {
 		return when(uriMatcher.match(uri)) {
-			CODE_ALLDATA -> favoriteDatabase.listUsersDao().cursorDB()
+			CODE_ALL_DATA -> favoriteDatabase.listUsersDao().cursorDB()
 			else -> null
 		}
 	}

@@ -9,7 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.dicoding.submission.R
 import com.dicoding.submission.view.MainActivity
@@ -23,14 +23,16 @@ class AlarmReceiver : BroadcastReceiver() {
 		private const val ID_REPEAT = 101
 	}
 
+	@RequiresApi(Build.VERSION_CODES.M)
 	override fun onReceive(context: Context, intent: Intent) {
 		showAlarmNotification(context)
 	}
 
+	@RequiresApi(Build.VERSION_CODES.M)
 	fun setRepeater(context: Context) {
 		alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 		alarmIntent = Intent(context, AlarmReceiver::class.java).let {
-			PendingIntent.getBroadcast(context, ID_REPEAT, it, 0)
+			PendingIntent.getBroadcast(context, ID_REPEAT, it, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 
 		val calendar: Calendar = Calendar.getInstance().apply {
@@ -48,18 +50,18 @@ class AlarmReceiver : BroadcastReceiver() {
 			AlarmManager.INTERVAL_DAY,
 			alarmIntent
 		)
-		Log.d("Alarm", "set alarm")
 	}
 
+	@RequiresApi(Build.VERSION_CODES.M)
 	fun cancelRepeater(context: Context) {
 		alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 		alarmIntent = Intent(context, AlarmReceiver::class.java).let {
-			PendingIntent.getBroadcast(context, ID_REPEAT, it, 0)
+			PendingIntent.getBroadcast(context, ID_REPEAT, it, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 		alarmMgr?.cancel(alarmIntent)
-		Log.d("Alarm", "cancel alarm")
 	}
 
+	@RequiresApi(Build.VERSION_CODES.M)
 	private fun showAlarmNotification(context: Context) {
 
 		val chanelId = "Channel_1"
@@ -69,7 +71,7 @@ class AlarmReceiver : BroadcastReceiver() {
 			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 		}
 		val notifPending =
-			PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+			PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
 		val notificationManagerCompat =
 			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

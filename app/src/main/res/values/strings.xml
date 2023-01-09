@@ -1,44 +1,14 @@
 <resources>
     <string name="app_name">GitHub</string>
-    <string name="search">Search</string>
     <string name="search_hint">Input Username</string>
-    <string name="avatar">Avatar</string>
     <string name="avatar_user">Avatar User</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
     <string name="repo">Repo:</string>
-    <string name="company">Company</string>
-    <string name="no_company">Company is not found</string>
     <string name="favorite">Favorite</string>
-    <string name="setting">Setting</string>
-    <string name="tab_favorite">Tab Favorite</string>
-    <string name="tab_followers">Followers</string>
-    <string name="tab_following">Following</string>
-    <string name="there_are_no_followers_yet">&lt;b>%1$s &lt;/b> doesn\'t have any followers yet</string>
-    <string name="there_are_no_following_yet">&lt;b>%1$s &lt;/b> isn\'t following anybody</string>
     <string name="list_favorite">List Favorites</string>
-    <string name="background">background</string>
     <string name="alarm_title_pref">Repeat the Alarm at 9:00 AM</string>
-    <string name="alarm_key">alarm_id</string>
-    <string name="delete_button">Delete Button</string>
-    <string name="full_name">full name</string>
-    <string name="name">Name</string>
-    <string name="username">Username</string>
-    <string name="location">Location</string>
-    <string name="counter">counter</string>
     <string name="more">More</string>
-    <string name="btn_remove">Remove</string>
-    <string name="msg_removed">Removed</string>
-    <string name="msg_remove_user">Removed from favorite list?</string>
-    <string name="btn_negative">Cancel</string>
-    <string name="btn_favorited">%1$s is favorited</string>
-    <string name="btn_removed">%1$s removed</string>
-    <string name="users_not_found">Not Found</string>
-    <string name="connection_failed_title">Connection failed</string>
-    <string name="not_found_message">%1$s was not found</string>
-    <string name="home_logo">home logo</string>
-    <string name="reminders_summary_off">Reminder is turn off</string>
-    <string name="reminder_summary_on">Reminder activated</string>
     <string name="msg_notification">Search User Github</string>
 
 </resources>

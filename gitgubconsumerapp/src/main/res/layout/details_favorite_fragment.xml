@@ -12,7 +12,6 @@
     android:textAlignment="textStart">
 
     <TextView
-        android:id="@+id/tv_followers_fv"
         style="@style/DeteilUserTextRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -46,7 +45,6 @@
         app:layout_constraintTop_toTopOf="@+id/textView7" />
 
     <TextView
-        android:id="@+id/tv_repos_fv"
         style="@style/DeteilUserTextRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -58,7 +56,6 @@
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/tv_following_fv"
         style="@style/DeteilUserTextRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

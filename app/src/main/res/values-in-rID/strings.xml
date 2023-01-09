@@ -1,44 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GitHub</string>
-    <string name="search">Cari</string>
     <string name="search_hint">Masukkan nama pengguna</string>
-    <string name="avatar">Avatar</string>
     <string name="avatar_user">Avatar Pengguna</string>
     <string name="follower">Pengikut</string>
     <string name="following">Diikuti</string>
     <string name="repo">Repo:</string>
-    <string name="company">Perusahaan</string>
-    <string name="no_company">Perusahaan tidak ditemukan</string>
     <string name="favorite">Favorit</string>
-    <string name="setting">Setelan</string>
-    <string name="tab_favorite">Tab Favorit</string>
-    <string name="tab_followers">Pengikut</string>
-    <string name="tab_following">Diikuti</string>
-    <string name="there_are_no_followers_yet">&lt;b>%1$s &lt;/b> belum memiliki pengikut</string>
-    <string name="there_are_no_following_yet">&lt;b>%1$s &lt;/b> tidak mengikuti siapapun</string>
     <string name="list_favorite">Daftar Favorite</string>
-    <string name="background">latar belakang</string>
     <string name="alarm_title_pref">Ulangi Alarm Pada Pukul 9:00 AM</string>
-    <string name="alarm_key">alarm_id</string>
-    <string name="delete_button">Tombol hapus</string>
-    <string name="full_name">Nama Lengkap</string>
-    <string name="name">Nama</string>
-    <string name="username">Nama pengguna</string>
-    <string name="location">Lokasi</string>
-    <string name="counter">counter</string>
     <string name="more">Selengkapnya</string>
-    <string name="btn_remove">Hapus</string>
-    <string name="msg_removed">Dihapus</string>
-    <string name="msg_remove_user">Hapus dari daftar favorit?</string>
-    <string name="btn_negative">Batal</string>
-    <string name="btn_favorited">%1$s ditambahkan ke daftar favorite</string>
-    <string name="btn_removed">%1$s dihapus</string>
-    <string name="users_not_found">Tidak Ditemukan</string>
-    <string name="connection_failed_title">Koneksi gagal</string>
-    <string name="not_found_message">%1$s tidak ditemukan</string>
-    <string name="home_logo">home logo</string>
-    <string name="reminders_summary_off">Pengingat dimatikan</string>
-    <string name="reminder_summary_on">Pengingat diaktifkan</string>
     <string name="msg_notification">Cari pengguna Github</string>
 </resources>
