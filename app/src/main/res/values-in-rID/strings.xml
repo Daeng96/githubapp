@@ -5,8 +5,8 @@
     <string name="search_hint">Masukkan nama pengguna</string>
     <string name="avatar">Avatar</string>
     <string name="avatar_user">Avatar Pengguna</string>
-    <string name="follower">Pengikut:</string>
-    <string name="following">Diikuti:</string>
+    <string name="follower">Pengikut</string>
+    <string name="following">Diikuti</string>
     <string name="repo">Repo:</string>
     <string name="company">Perusahaan</string>
     <string name="no_company">Perusahaan tidak ditemukan</string>

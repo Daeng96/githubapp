@@ -1,36 +1,42 @@
 package com.dicoding.submission.view
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.HomeWork
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.Top
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.dicoding.submission.R
 import com.dicoding.submission.model.DetailUser
-import com.dicoding.submission.theme.Typography
+import com.dicoding.submission.theme.*
 import com.dicoding.submission.view.tools.ErrorScreen
 import com.dicoding.submission.view.tools.GithubTabRowDefault
 import com.dicoding.submission.view.tools.GithubTabRowDefault.pagerM3TabIndicatorOffset
@@ -39,11 +45,16 @@ import com.dicoding.submission.view.tools.ProgressIndicator
 import com.dicoding.submission.viewmodel.DetailUsersViewModel
 import com.dicoding.submission.viewmodel.FollowViewModel
 import com.dicoding.submission.viewmodel.RequestResult
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DetailUserScreen(
 	login: String,
@@ -51,21 +62,39 @@ fun DetailUserScreen(
 ) {
 	val detailUsersViewModel: DetailUsersViewModel = hiltViewModel()
 
-	LaunchedEffect(key1 = Unit) {
+	LaunchedEffect(key1 = login) {
 		detailUsersViewModel.setDetailUsers(login)
 	}
 	val isExists by detailUsersViewModel.isExists(login).observeAsState(false)
+	val coroutineScope = rememberCoroutineScope()
+	var refreshing by remember { mutableStateOf(false) }
+	fun refresh() = coroutineScope.launch(Dispatchers.IO) {
+		refreshing = true
+		detailUsersViewModel.setDetailUsers(login)
+		refreshing = false
+	}
+	val pullRefreshState = rememberPullRefreshState(refreshing = refreshing, onRefresh = ::refresh)
 
 	val userDetailResult =
 		detailUsersViewModel.detailUser.observeAsState(RequestResult.Progress).value
 
-	Box(modifier = Modifier.fillMaxSize()) {
+	Box(
+		modifier = Modifier
+			.pullRefresh(pullRefreshState, enabled = true)
+			.fillMaxSize()
+
+	) {
 		when (userDetailResult) {
 			is RequestResult.Progress -> {
 				ProgressIndicator()
 			}
 			is RequestResult.Success -> {
-				DetailUserContent(user = userDetailResult.data, navigateToDetail = navigateToDetail)
+				//refreshing = false
+				DetailUserContent(
+					user = userDetailResult.data,
+					navigateToDetail = navigateToDetail,
+					coroutineScope = coroutineScope
+				)
 				ExtendedFloatingActionButton(
 					onClick = {
 						if (isExists) {
@@ -78,32 +107,49 @@ fun DetailUserScreen(
 						.align(Alignment.BottomEnd)
 						.padding(16.dp)
 				) {
-
 					Icon(
 						imageVector = if (!isExists) Icons.Outlined.FavoriteBorder else Icons.Default.Favorite,
 						contentDescription = null
 					)
-					Text(text = stringResource(id = R.string.btn_favorited))
+					Text(
+						text = stringResource(id = R.string.favorite),
+						modifier = Modifier.padding(start = 8.dp)
+					)
 				}
 			}
 			is RequestResult.Error -> {
-				ErrorScreen(userDetailResult.message)
+				ErrorScreen(
+					msg = userDetailResult.message,
+					modifier = Modifier
+						.align(Center)
+						.padding(16.dp)
+				)
 			}
 		}
+		PullRefreshIndicator(
+			refreshing = refreshing,
+			state = pullRefreshState,
+			modifier = Modifier.align(TopCenter)
+		)
 	}
 }
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
+@OptIn(
+	ExperimentalPagerApi::class, ExperimentalFoundationApi::class
+)
 @Composable
 private fun DetailUserContent(
 	user: DetailUser,
+	coroutineScope: CoroutineScope,
 	navigateToDetail: (String) -> Unit
 ) {
+
 	val followViewModel: FollowViewModel = hiltViewModel()
-	LaunchedEffect(key1 = Unit) {
+	LaunchedEffect(key1 = user.login) {
 		followViewModel.setFollowing(user.login)
 		followViewModel.setFollower(user.login)
 	}
+
 	val pagerState = rememberPagerState()
 	val tabTitle =
 		listOf(
@@ -111,12 +157,11 @@ private fun DetailUserContent(
 			stringResource(id = R.string.following)
 		)
 
-	val coroutineScope = rememberCoroutineScope()
 
 	Column(
 		modifier = Modifier
-			.fillMaxSize()
-			.padding(horizontal = 16.dp),
+			.padding(horizontal = 16.dp)
+			.fillMaxSize(),
 		verticalArrangement = Arrangement.spacedBy(8.dp)
 	) {
 
@@ -124,19 +169,22 @@ private fun DetailUserContent(
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(top = 16.dp)
-				.verticalScroll(ScrollState(0)),
+				.verticalScroll(ScrollState(0), false),
 			horizontalArrangement = Arrangement.spacedBy(8.dp)
 		) {
 			Column(
 				modifier = Modifier.fillMaxWidth(0.3f),
 				verticalArrangement = Arrangement.spacedBy(4.dp),
-				horizontalAlignment = Alignment.CenterHorizontally
+				horizontalAlignment = CenterHorizontally
 			) {
 				AsyncImage(model = user.avatarUrl, contentDescription = user.login)
-				Text(text = user.name ?: "unknown")
+				Text(text = user.name ?: "unknown", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 			}
 
-			Column(modifier = Modifier.fillMaxWidth(0.7f)) {
+			Column(
+				modifier = Modifier.fillMaxWidth(0.7f),
+				verticalArrangement = Arrangement.spacedBy(8.dp)
+			) {
 				RightPanel(
 					modifier = Modifier.fillMaxWidth(),
 					icon = Icons.Default.Person,
@@ -149,32 +197,47 @@ private fun DetailUserContent(
 					title = user.location ?: "unknown"
 				)
 
-				FlowRow(modifier = Modifier.fillMaxWidth()) {
+				FlowRow(
+					modifier = Modifier.fillMaxWidth(),
+					crossAxisSpacing = 6.dp,
+					mainAxisSpacing = 8.dp,
+					mainAxisSize = SizeMode.Wrap,
+					mainAxisAlignment = FlowMainAxisAlignment.Center
+				) {
 					RightBottomPanel(
-						modifier = Modifier.fillMaxWidth(),
+						modifier = Modifier.wrapContentSize(),
 						title = stringResource(id = R.string.follower),
-						subtitle = "${user.followers}"
+						subtitle = "${user.followers}",
+						colors = listOf (Color.Red, Orange)
 					)
 					RightBottomPanel(
-						modifier = Modifier.fillMaxWidth(),
+						modifier = Modifier.wrapContentSize(),
 						title = stringResource(id = R.string.following),
-						subtitle = "${user.following}"
+						subtitle = "${user.following}",
+						colors = listOf (Purple, Purple1)
 					)
 					RightBottomPanel(
-						modifier = Modifier.fillMaxWidth(),
+						modifier = Modifier.wrapContentSize(),
 						title = stringResource(id = R.string.repo),
-						subtitle = "${user.publicRepos}"
+						subtitle = "${user.publicRepos}",
+						colors = listOf (Blue, Blue1)
 					)
 				}
 			}
 		}
 
-		Text(
-			text = user.company ?: "unknown",
-			modifier = Modifier.fillMaxWidth(),
-			textAlign = TextAlign.Center,
-			style = Typography.titleLarge
-		)
+		Row(
+			modifier = Modifier.align(CenterHorizontally),
+			horizontalArrangement = Arrangement.spacedBy(8.dp),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Icon(imageVector = Icons.Default.HomeWork, contentDescription = "Company Icon")
+			Text(
+				text = user.company ?: "unknown",
+				textAlign = TextAlign.Center,
+				style = Typography.titleMedium
+			)
+		}
 
 		TabRow(
 			selectedTabIndex = pagerState.currentPage,
@@ -185,9 +248,9 @@ private fun DetailUserContent(
 				)
 			},
 			containerColor = Color.Transparent,
-			divider = {}
+			divider = { Divider()},
+			modifier = Modifier.wrapContentSize()
 		) {
-
 			tabTitle.forEachIndexed { index, title ->
 				Tab(
 					selected = pagerState.currentPage == index,
@@ -196,13 +259,12 @@ private fun DetailUserContent(
 							pagerState.scrollToPage(index)
 						}
 					},
-					modifier = Modifier.heightIn(min = 48.dp),
 					selectedContentColor = MaterialTheme.colorScheme.primary,
-					unselectedContentColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+					unselectedContentColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+					modifier = Modifier.heightIn(min = 48.dp)
 				) {
 					Text(
-						text = title.removeSuffix(":"),
-						modifier = Modifier.padding(vertical = 8.dp)
+						text = title
 					)
 				}
 			}
@@ -212,7 +274,7 @@ private fun DetailUserContent(
 		HorizontalPager(
 			pageCount = 2,
 			state = pagerState,
-			verticalAlignment = Alignment.Top,
+			verticalAlignment = Top,
 			modifier = Modifier.fillMaxHeight(),
 			pageSpacing = 16.dp,
 			contentPadding = PaddingValues(horizontal = 16.dp)
@@ -239,7 +301,9 @@ private fun DetailUserContent(
 									})
 							}
 							is RequestResult.Error -> {
-								ErrorScreen(followers.message)
+								ErrorScreen(followers.message, modifier = Modifier
+									.align(Alignment.Center)
+									.padding(16.dp))
 							}
 							is RequestResult.Progress -> {
 								RequestResult.Progress
@@ -266,7 +330,9 @@ private fun DetailUserContent(
 									})
 							}
 							is RequestResult.Error -> {
-								ErrorScreen(following.message)
+								ErrorScreen(following.message, modifier = Modifier
+									.align(Alignment.Center)
+									.padding(16.dp))
 							}
 							is RequestResult.Progress -> {
 								RequestResult.Progress
@@ -277,7 +343,6 @@ private fun DetailUserContent(
 			}
 		}
 	}
-
 }
 
 @Composable
@@ -299,14 +364,41 @@ private fun RightPanel(
 private fun RightBottomPanel(
 	modifier: Modifier,
 	title: String,
-	subtitle: String
+	subtitle: String,
+	colors: List<Color>
 ) {
 	Row(
-		modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp),
+		modifier = modifier,
 		verticalAlignment = Alignment.CenterVertically
 	) {
-		Text(text = title, maxLines = 1)
-		Text(text = subtitle, maxLines = 1)
+		Text(
+			text = title,
+			maxLines = 1,
+			modifier = Modifier
+				.background(
+					shape = RoundStart,
+					brush = Brush.linearGradient(
+						colors = listOf (Color.Black, Color.DarkGray)
+					)
+				)
+				.padding(8.dp, 2.dp),
+			fontFamily = FontFamily.Monospace,
+			style = Typography.titleSmall.copy(color = Color.White)
+		)
+		Text(
+			text = subtitle,
+			maxLines = 1,
+			modifier = Modifier
+				.background(
+					shape = RoundEnd,
+					brush = Brush.linearGradient(
+						colors = colors
+					)
+				)
+				.padding(8.dp, 2.dp),
+			fontFamily = FontFamily.Monospace,
+			style = Typography.titleSmall.copy(color = Color.White)
+		)
 	}
 }
 

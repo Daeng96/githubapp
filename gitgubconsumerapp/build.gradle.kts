@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.4.0-alpha02"
+    val composeVersion = "1.4.0-alpha03"
    // implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.10'
     implementation ("androidx.core:core-ktx:1.9.0")
     implementation ("androidx.appcompat:appcompat:1.5.1")

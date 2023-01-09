@@ -127,7 +127,12 @@ fun GitHubTopBar(
 								contentDescription = "back"
 							)
 						}
-					}
+					},
+					colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+						navigationIconContentColor = MaterialTheme.colorScheme.primary,
+						titleContentColor = MaterialTheme.colorScheme.primary,
+						actionIconContentColor = MaterialTheme.colorScheme.primary,
+					)
 				)
 			}
 			NavRoute.SettingsScreen.route, NavRoute.FavoriteScreen.route -> {
@@ -140,7 +145,12 @@ fun GitHubTopBar(
 								contentDescription = "back"
 							)
 						}
-					}
+					},
+					colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+						navigationIconContentColor = MaterialTheme.colorScheme.primary,
+						titleContentColor = MaterialTheme.colorScheme.primary,
+						actionIconContentColor = MaterialTheme.colorScheme.primary,
+					)
 				)
 			}
 			else -> {}

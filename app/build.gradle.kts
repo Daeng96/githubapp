@@ -70,7 +70,7 @@ android {
 dependencies {
 	implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-	val composeVersion = "1.4.0-alpha02"
+	val composeVersion = "1.4.0-alpha03"
 
 	//implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
 	implementation("androidx.core:core-ktx:1.9.0")

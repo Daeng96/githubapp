@@ -16,3 +16,13 @@ val BottomShape = Shapes().medium.copy(
 	bottomStart = CornerSize(10),
 	bottomEnd = CornerSize(10)
 )
+
+val RoundStart = Shapes().extraLarge.copy(
+	topEnd = CornerSize(0),
+	bottomEnd = CornerSize(0)
+)
+
+val RoundEnd = Shapes().extraLarge.copy(
+	topStart = CornerSize(0),
+	bottomStart = CornerSize(0)
+)

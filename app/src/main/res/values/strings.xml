@@ -4,8 +4,8 @@
     <string name="search_hint">Input Username</string>
     <string name="avatar">Avatar</string>
     <string name="avatar_user">Avatar User</string>
-    <string name="follower">Follower:</string>
-    <string name="following">Following:</string>
+    <string name="follower">Follower</string>
+    <string name="following">Following</string>
     <string name="repo">Repo:</string>
     <string name="company">Company</string>
     <string name="no_company">Company is not found</string>

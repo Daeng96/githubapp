@@ -16,7 +16,7 @@ import coil.compose.AsyncImage
 fun ListItem(
 	login: String,
 	avatarUrl: String?,
-	userScore: Double? = null,
+	subTitle: String? = null,
 	itemOnClick: (String) -> Unit = {}
 ) {
 	Row(
@@ -37,10 +37,10 @@ fun ListItem(
 			verticalArrangement = Arrangement.spacedBy(8.dp)
 		) {
 			Text(text = login)
-			userScore?.let {
-				Text(text = "Scores: $it")
+			subTitle?.let {
+				Text(text = it)
 			}
-			userScore?.let {
+			subTitle?.let {
 				Divider()
 			}
 		}

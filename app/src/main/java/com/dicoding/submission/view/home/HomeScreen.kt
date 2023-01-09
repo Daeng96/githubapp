@@ -31,7 +31,9 @@ fun HomeScreen(
 				ProgressIndicator()
 			}
 			is RequestResult.Error -> {
-				ErrorScreen(searchResult.message)
+				ErrorScreen(searchResult.message, modifier = Modifier
+					.align(Alignment.Center)
+					.padding(16.dp))
 			}
 			is RequestResult.Success -> {
 				UserListContent(
@@ -61,14 +63,14 @@ private fun UserListContent(
 ) {
 	LazyColumn(
 		state = rememberLazyListState(),
-		contentPadding = PaddingValues(horizontal = 16.dp),
+		contentPadding = PaddingValues(all = 16.dp),
 		verticalArrangement = Arrangement.spacedBy(4.dp),
 		content = {
 			items(items = itemsUser, key = { it.login }) { user ->
 				ListItem(
 					login = user.login,
 					avatarUrl = user.avatarUrl,
-					userScore = user.score,
+					subTitle = "Score: ${user.score}",
 					itemOnClick = itemOnClick
 				)
 			}

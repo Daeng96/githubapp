@@ -15,8 +15,12 @@ import com.dicoding.submission.view.ListFavoritesScreen
 import com.dicoding.submission.view.SettingScreen
 import com.dicoding.submission.view.SplashScreen
 import com.dicoding.submission.view.home.HomeScreen
+import com.dicoding.submission.view.navigation.NavRoute.FavoriteScreen.BottomSheetRoute
 import com.dicoding.submission.viewmodel.RequestResult
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.bottomSheet
 
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 fun GitHubNavigation(
 	navController: NavHostController,
@@ -65,6 +69,12 @@ fun GitHubNavigation(
 
 		composable(NavRoute.FavoriteScreen.route) {
 			ListFavoritesScreen()
+		}
+
+		bottomSheet(route = BottomSheetRoute, arguments = listOf(
+			navArgument("login") {}
+		)) {
+
 		}
 	}
 }
