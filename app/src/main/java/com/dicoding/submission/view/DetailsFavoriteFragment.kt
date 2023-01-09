@@ -1,71 +1,60 @@
 package com.dicoding.submission.view
 
-import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dicoding.submission.R
 import com.dicoding.submission.db.Favorites
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.dicoding.submission.viewmodel.DetailUsersViewModel
 
+@Composable
+fun FavoriteBottomSheet(
+	login: String,
+	navigateToDetail: (String) -> Unit
+) {
 
-/*
-class DetailsFavoriteFragment : BottomSheetDialogFragment() {
+	val detailUsersViewModel: DetailUsersViewModel = hiltViewModel()
+	val user by detailUsersViewModel.getUserByLogin(login).collectAsState(initial = Favorites())
 
-	private lateinit var listFavorites: Favorites
-	companion object {
-
-		const val FV_KEY = "fav"
-		fun newInstance( favorites: Favorites) : DetailsFavoriteFragment{
-			val fragment = DetailsFavoriteFragment()
-			val args = Bundle().apply {
-				putParcelable(FV_KEY, favorites)
+	Surface(contentColor = MaterialTheme.colorScheme.onBackground) {
+		Column(
+			modifier = Modifier.fillMaxWidth(),
+			verticalArrangement = Arrangement.spacedBy(8.dp)
+		) {
+			Spacer(modifier = Modifier.height(8.dp))
+			ProfileContent(
+				avatarUrl = user.avatarUrl,
+				login = user.login,
+				userName = user.name,
+				location = user.location,
+				followers = user.followers ?: 0,
+				following = user.following ?: 0,
+				publicRepos = user.publicRepos ?: 0,
+				company = user.company,
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 8.dp)
+			)
+			OutlinedButton(
+				onClick = { navigateToDetail(login) },
+				modifier = Modifier.align(CenterHorizontally),
+				shape = CircleShape
+			) {
+				Text(text = stringResource(id = R.string.more))
 			}
-			fragment.arguments = args
-			return fragment
-		}
-
-	}
-
-	fun showBottomModal(fragmentManager: FragmentManager) {
-		if (fragmentManager.findFragmentByTag(FV_KEY) != null) return showNow(fragmentManager, FV_KEY)
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View? {
-		return inflater.inflate(R.layout.details_favorite_fragment, container, false)
-	}
-
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
-		arguments?.getParcelable<Favorites>(FV_KEY)?.let {
-			listFavorites = it
-		}
-		tv_company_fv.text = listFavorites.company
-		tv_detail_fv_na.text = listFavorites.name
-		tv_username_fv.text = listFavorites.login
-		tv_followers_fv.text = listFavorites.followers.toString()
-		tv_following_fv.text = listFavorites.following.toString()
-		tv_repos_fv.text = listFavorites.publicRepos.toString()
-		tv_location_fv.text = listFavorites.location
-
-		Glide.with(this)
-			.load(listFavorites.avatarUrl)
-			.apply(RequestOptions.circleCropTransform())
-			.into(img_detail_fv)
-
-		btn_more.setOnClickListener{
-			val i = Intent(context, DetailUserActivity::class.java)
-			i.putExtra(DetailUserActivity.EXTRA_PERSON, listFavorites.login)
-			startActivity(i)
+			Spacer(modifier = Modifier.height(8.dp))
 		}
 	}
 
-}*/
+}

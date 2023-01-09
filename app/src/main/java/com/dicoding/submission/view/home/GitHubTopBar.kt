@@ -2,7 +2,6 @@ package com.dicoding.submission.view.home
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import com.dicoding.submission.R
+import com.dicoding.submission.theme.TopShape
 import com.dicoding.submission.theme.Typography
 import com.dicoding.submission.view.navigation.NavRoute
 
@@ -42,9 +42,7 @@ fun GitHubTopBar(
 			NavRoute.HomeScreen.route -> {
 
 				var isSearch by rememberSaveable { mutableStateOf(false) }
-				val (userName, setUserName) = rememberSaveable {
-					mutableStateOf("")
-				}
+				val (userName, setUserName) = rememberSaveable { mutableStateOf("") }
 				val keyboard = LocalSoftwareKeyboardController.current
 
 				TopAppBar(
@@ -52,37 +50,11 @@ fun GitHubTopBar(
 						AnimatedContent(targetState = isSearch) { searching ->
 							when (searching) {
 								true -> {
-									TextField(
-										value = userName,
-										onValueChange = setUserName,
-										shape = MaterialTheme.shapes.medium,
-										modifier = Modifier.heightIn(max = 50.dp),
-										label = { Text(text = stringResource(id = R.string.search_hint))},
-										textStyle = Typography.titleMedium,
-										trailingIcon = {
-											Row {
-												IconButton(onClick = {
-													setUserName("")
-												}, enabled = userName.isNotEmpty()) {
-													Icon(
-														imageVector = Icons.Outlined.Close,
-														contentDescription = "Delete"
-													)
-												}
-											}
-										},
-										keyboardActions = KeyboardActions(
-											onSearch = {
-												onSearchingUser(userName)
-												keyboard?.hide()
-												isSearch = false
-											}
-										),
-										keyboardOptions = KeyboardOptions.Default.copy(
-											imeAction = ImeAction.Search,
-											keyboardType = KeyboardType.Text
-										)
-									)
+									SearchView(userName = userName, setUserName = setUserName) {
+										onSearchingUser(userName)
+										keyboard?.hide()
+										isSearch = false
+									}
 								}
 								false -> {
 									Text(text = stringResource(id = R.string.app_name), color = MaterialTheme.colorScheme.primary)
@@ -135,9 +107,9 @@ fun GitHubTopBar(
 					)
 				)
 			}
-			NavRoute.SettingsScreen.route, NavRoute.FavoriteScreen.route -> {
+			NavRoute.SettingsScreen.route, NavRoute.FavoriteScreen.route, NavRoute.FavoriteScreen.BottomSheetRoute -> {
 				CenterAlignedTopAppBar(
-					title = { Text(text = it.destination.route!!) },
+					title = { Text(text = it.destination.route!!.substringBefore("/")) },
 					navigationIcon = {
 						IconButton(onClick = { navigateUp() }) {
 							Icon(
@@ -156,5 +128,43 @@ fun GitHubTopBar(
 			else -> {}
 		}
 	}
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchView(
+	userName: String,
+	setUserName: (String) -> Unit,
+	onSearch: () -> Unit
+) {
+	TextField(
+		value = userName,
+		onValueChange = setUserName,
+		shape = TopShape,
+		modifier = Modifier.heightIn(max = 50.dp),
+		label = { Text(text = stringResource(id = R.string.search_hint))},
+		textStyle = Typography.titleMedium,
+		leadingIcon = { Icon(
+			imageVector = Icons.Outlined.Search,
+			contentDescription = "Search Icon"
+		)},
+		trailingIcon = {
+				IconButton(
+					onClick = { setUserName("") },
+					enabled = userName.isNotEmpty()) {
+					Icon(
+						imageVector = Icons.Outlined.Close,
+						contentDescription = "Delete"
+					)
+				}
+		},
+		keyboardActions = KeyboardActions(
+			onSearch = { onSearch() }
+		),
+		keyboardOptions = KeyboardOptions.Default.copy(
+			imeAction = ImeAction.Search,
+			keyboardType = KeyboardType.Text
+		)
+	)
 }
 

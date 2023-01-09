@@ -26,10 +26,9 @@ class DetailUsersViewModel @Inject constructor(
 	private val _detailUser = MutableLiveData<RequestResult<DetailUser>>()
 	val detailUser: LiveData<RequestResult<DetailUser>> = _detailUser
 
+	fun getUserByLogin(login: String) = dbRepository.getUserByLogin(login)
 	val allUsers: LiveData<List<Favorites>> = dbRepository.listUsers
-
 	fun isExists(login: String?)  = dbRepository.isExists(login).map { it.isNotEmpty() }
-
 
 	fun insertAll(favorite: Favorites) = viewModelScope.launch(Dispatchers.IO) {
 		dbRepository.insertAll(favorite)

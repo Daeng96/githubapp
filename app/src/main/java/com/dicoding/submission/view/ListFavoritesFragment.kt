@@ -13,7 +13,9 @@ import com.dicoding.submission.view.tools.ListItem
 import com.dicoding.submission.viewmodel.DetailUsersViewModel
 
 @Composable
-fun ListFavoritesScreen() {
+fun ListFavoritesScreen(
+	showBottomSheet: (String) -> Unit
+) {
 
 	val detailUsersViewModel: DetailUsersViewModel = hiltViewModel()
 	val favorites = detailUsersViewModel.allUsers.observeAsState(emptyList()).value
@@ -26,9 +28,7 @@ fun ListFavoritesScreen() {
 				login = user.login,
 				avatarUrl = user.avatarUrl,
 				subTitle = stringResource(id = R.string.repo).plus(" ${user.publicRepos}"),
-				itemOnClick = {
-
-				})
+				itemOnClick = showBottomSheet)
 		}
 	})
 

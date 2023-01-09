@@ -10,10 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.dicoding.submission.model.User
-import com.dicoding.submission.view.DetailUserScreen
-import com.dicoding.submission.view.ListFavoritesScreen
-import com.dicoding.submission.view.SettingScreen
-import com.dicoding.submission.view.SplashScreen
+import com.dicoding.submission.view.*
 import com.dicoding.submission.view.home.HomeScreen
 import com.dicoding.submission.view.navigation.NavRoute.FavoriteScreen.BottomSheetRoute
 import com.dicoding.submission.viewmodel.RequestResult
@@ -68,13 +65,20 @@ fun GitHubNavigation(
 		}
 
 		composable(NavRoute.FavoriteScreen.route) {
-			ListFavoritesScreen()
+			ListFavoritesScreen(showBottomSheet = { login ->
+				navController.navigate(
+					NavRoute.FavoriteScreen.showBottomSheet(
+						login
+					)
+				)
+			})
 		}
 
 		bottomSheet(route = BottomSheetRoute, arguments = listOf(
 			navArgument("login") {}
 		)) {
-
+			FavoriteBottomSheet(login = it.arguments?.getString("login") as String,
+				navigateToDetail = { login -> navController.navigate(NavRoute.HomeScreen.navigateToDetail(login)) })
 		}
 	}
 }

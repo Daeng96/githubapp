@@ -22,7 +22,8 @@ private val DarkColorScheme = darkColorScheme(
 	primaryContainer = Color(0xFF491605),
 	onPrimaryContainer = Color(0xFFFF5722),
 	surface = Color(0xFF101313),
-	surfaceVariant = Color(0xFF161515)
+	surfaceVariant = Color(0xFF222222),
+	onSurfaceVariant = Color(0xFFFCFCFC)
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -41,7 +42,7 @@ private val LightColorScheme = lightColorScheme(
 	tertiary = CreamDark,
 	tertiaryContainer = Cream,
 
-	surfaceVariant = Color(0xFFE0E8EC),
+	surfaceVariant = Color(0xFFEFEFEF),
 	onSurfaceVariant = Color(0xFF03A9F4),
 	surface = Color(0xFFF9FBFC),
 	onSurface = Color.Black,

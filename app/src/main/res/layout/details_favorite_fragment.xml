@@ -12,8 +12,7 @@
     android:textAlignment="textStart"
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:layout_constraintCircleRadius="@dimen/cardview_default_elevation"
-    tools:context=".view.DetailsFavoriteFragment">
+    app:layout_constraintCircleRadius="@dimen/cardview_default_elevation">
 
     <TextView
         android:id="@+id/tv_followers_fv"
