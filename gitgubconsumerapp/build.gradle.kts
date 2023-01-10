@@ -93,6 +93,11 @@ dependencies {
     kapt ("com.google.dagger:hilt-compiler:2.44.2")
 
 
+    val accompanistVersion = "0.28.0"
+
+    implementation ("com.google.accompanist:accompanist-navigation-material:$accompanistVersion")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     testImplementation ("junit:junit:4.13.2")

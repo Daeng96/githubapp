@@ -17,8 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dicoding.submission.R
 
-private const val DELAY_MILLIS = 2000L
-
 @Composable
 fun SplashScreen(navigateToHomeScreen: () -> Unit) {
 

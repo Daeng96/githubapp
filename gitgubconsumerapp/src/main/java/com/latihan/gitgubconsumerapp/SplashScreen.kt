@@ -1,13 +1,18 @@
 package com.latihan.gitgubconsumerapp
 
-import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_splash_screen.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
-class SplashScreen : AppCompatActivity() {
+/*class SplashScreen : AppCompatActivity() {
 
 	private val delayMillis : Long  = 2000
 
@@ -23,5 +28,26 @@ class SplashScreen : AppCompatActivity() {
 			finish()
 		}, delayMillis) }
 
+	}
+}*/
+
+@Composable
+fun SplashScreen(
+	navigateToHome: () -> Unit
+) {
+
+	LaunchedEffect(key1 = Unit, block = {
+		delay(1000L)
+		navigateToHome()
+	})
+
+	Box(modifier = Modifier.fillMaxSize()) {
+		Image(
+			painter = painterResource(id = R.drawable.github_logo),
+			contentDescription = "github logo",
+			modifier = Modifier
+				.size(120.dp)
+				.align(Alignment.Center)
+		)
 	}
 }

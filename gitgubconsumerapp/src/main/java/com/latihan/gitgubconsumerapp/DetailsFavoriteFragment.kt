@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -67,5 +68,10 @@ class DetailsFavoriteFragment : BottomSheetDialogFragment() {
 			startActivity(i)
 		}
 	}
+
+}
+
+@Composable
+fun DetailUserBottomSheet (login: String) {
 
 }
