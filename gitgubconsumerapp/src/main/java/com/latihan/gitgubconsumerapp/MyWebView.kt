@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
@@ -45,7 +46,7 @@ fun MyWebView(url: String, onBackPressed: () -> Unit) {
 
 		AndroidView(
 			modifier = Modifier
-				.fillMaxSize()
+				.wrapContentSize(Alignment.TopCenter)
 				.verticalScroll(ScrollState(0)),
 			factory = { context ->
 				WebView(context).apply {

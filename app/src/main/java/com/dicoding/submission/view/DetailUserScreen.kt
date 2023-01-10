@@ -6,12 +6,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HomeWork
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.Top
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -44,9 +49,11 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DetailUserScreen(
 	login: String,
@@ -63,17 +70,25 @@ fun DetailUserScreen(
 	val userDetailResult =
 		detailUsersViewModel.detailUser.observeAsState(RequestResult.Progress).value
 
+	var refreshing by remember { mutableStateOf(false) }
+	fun refresh() = coroutineScope.launch(Dispatchers.IO) {
+		refreshing = true
+		detailUsersViewModel.setDetailUsers(login)
+		refreshing = false
+	}
+
+	val pullRefreshState = rememberPullRefreshState(refreshing = refreshing, onRefresh = ::refresh)
+
 	Box(
 		modifier = Modifier
 			.fillMaxSize()
-
+			.pullRefresh(pullRefreshState)
 	) {
 		when (userDetailResult) {
 			is RequestResult.Progress -> {
 				ProgressIndicator()
 			}
 			is RequestResult.Success -> {
-				//refreshing = false
 				DetailUserContent(
 					user = userDetailResult.data,
 					navigateToDetail = navigateToDetail,
@@ -106,10 +121,19 @@ fun DetailUserScreen(
 					msg = userDetailResult.message,
 					modifier = Modifier
 						.align(Center)
+						.verticalScroll(ScrollState(0))
 						.padding(16.dp)
 				)
 			}
 		}
+
+		PullRefreshIndicator(
+			refreshing = refreshing,
+			state = pullRefreshState,
+			modifier = Modifier.align(
+				TopCenter
+			)
+		)
 	}
 }
 

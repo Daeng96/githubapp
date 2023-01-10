@@ -119,7 +119,6 @@ dependencies {
 	//koil
 	implementation("io.coil-kt:coil-compose:2.2.2")
 
-
 	// compose
 	implementation ("androidx.compose.foundation:foundation:$composeVersion")
 	implementation ("androidx.compose.material3:material3:1.1.0-alpha03")
@@ -130,7 +129,7 @@ dependencies {
 	implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 	implementation ("androidx.navigation:navigation-compose:2.5.3")
 	implementation ("androidx.activity:activity-compose:1.6.1")
-
+	implementation ("androidx.compose.material:material:1.4.0-alpha03")
 	implementation ("androidx.compose.material:material-icons-extended:1.3.1")
 	implementation ("com.google.dagger:hilt-android:2.44.2")
 	kapt ("com.google.dagger:hilt-compiler:2.44.2")
@@ -140,11 +139,8 @@ dependencies {
 
 	implementation ("com.google.accompanist:accompanist-navigation-material:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-	//implementation ("com.google.accompanist:accompanist-permissions:$accompanistVersion")
-	//implementation ("com.google.accompanist:accompanist-pager:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
-	//implementation ("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
 
 	//data store

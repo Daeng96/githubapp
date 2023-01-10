@@ -60,20 +60,9 @@ android {
 
 dependencies {
     val composeVersion = "1.4.0-alpha03"
-   // implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.10'
     implementation ("androidx.core:core-ktx:1.9.0")
     implementation ("androidx.appcompat:appcompat:1.5.1")
-   /*
-    implementation ("androidx.room:room-runtime:2.4.3")
-    implementation ("androidx.room:room-ktx:2.4.3")
-    implementation ("com.google.android.material:material:1.7.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("androidx.recyclerview:recyclerview:1.2.1")
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    kapt ("com.github.bumptech.glide:compiler:4.14.2")
-    implementation ("com.github.bumptech.glide:glide:4.14.2")*/
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
-   //implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
     // coil
     implementation("io.coil-kt:coil-compose:2.2.2")
