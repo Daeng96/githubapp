@@ -29,67 +29,6 @@ import com.google.accompanist.flowlayout.SizeMode
 import com.latihan.gitgubconsumerapp.Utils.CONTENT_URI
 import com.latihan.gitgubconsumerapp.theme.*
 
-
-/*
-class DetailsFavoriteFragment : BottomSheetDialogFragment() {
-
-	private lateinit var listFavorites: Favorites
-	companion object {
-
-		const val FV_KEY = "fav"
-		fun newInstance( favorites: Favorites) : DetailsFavoriteFragment{
-			val fragment = DetailsFavoriteFragment()
-			val args = Bundle().apply {
-				putParcelable(FV_KEY, favorites)
-			}
-			fragment.arguments = args
-			return fragment
-		}
-
-	}
-
-	fun showBottomModal(fragmentManager: FragmentManager) {
-		if (fragmentManager.findFragmentByTag(FV_KEY) != null) return
-		showNow(fragmentManager, FV_KEY)
-	}
-
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View? {
-		return inflater.inflate(R.layout.details_favorite_fragment, container, false)
-	}
-
-	@SuppressLint("SetJavaScriptEnabled")
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
-		arguments?.getParcelable<Favorites>(FV_KEY)?.let {
-			listFavorites = it
-		}
-		tv_company_fv.text = listFavorites.company
-		tv_detail_fv_na.text = listFavorites.name
-		tv_username_fv.text = listFavorites.login
-		tv_followers_fv.text = listFavorites.followers.toString()
-		tv_following_fv.text = listFavorites.following.toString()
-		tv_repos_fv.text = listFavorites.publicRepos.toString()
-		tv_location_fv.text = listFavorites.location
-
-		Glide.with(this)
-			.load(listFavorites.avatarUrl)
-			.apply(RequestOptions.circleCropTransform())
-			.into(img_detail_fv)
-
-		btn_more.setOnClickListener{
-
-			val i = Intent(context, MyWebView::class.java)
-			i.putExtra(MyWebView.URL_KEY, listFavorites.htmlUrl)
-			startActivity(i)
-		}
-	}
-
-}
-*/
-
 @Composable
 fun DetailUserBottomSheet(id: Int, toWebView: (String) -> Unit) {
 
@@ -106,7 +45,6 @@ fun DetailUserBottomSheet(id: Int, toWebView: (String) -> Unit) {
 		contentColor = MaterialTheme.colorScheme.onBackground,
 		modifier = Modifier.fillMaxWidth(),
 	) {
-
 		Column(
 			modifier = Modifier.fillMaxWidth().wrapContentHeight(Top),
 			verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -126,7 +64,7 @@ fun DetailUserBottomSheet(id: Int, toWebView: (String) -> Unit) {
 				login = user.login
 			)
 			OutlinedButton(
-				onClick = { },
+				onClick = { toWebView(user.htmlUrl)},
 				modifier = Modifier.align(Alignment.CenterHorizontally),
 				shape = CircleShape
 			) {

@@ -12,7 +12,7 @@ object Utils {
 		.appendPath(TABLE_NAME)
 		.build()
 
-	//fun String.fixArgs() = replace("/", "\\")
-	//fun String.fixUri() = replace("\\", "/")
+	fun String.fixArgs() = replace("/", "\\")
+	fun String.fixUri() = replace("\\", "/")
 
 }

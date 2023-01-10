@@ -5,12 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
+import com.latihan.gitgubconsumerapp.Utils.fixArgs
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
@@ -27,25 +27,31 @@ fun Activity.GithubNavigation(
 
 		composable("Home") {
 			HomeScreen(showBottomSheet = {
-				navHostController.navigate("UserDetail/$it")
+				navHostController.navigate("Home/$it")
 			})
 		}
 
 		bottomSheet(
-			route = "UserDetail/{id}",
+			route = "Home/{id}",
 			arguments = listOf(navArgument("id") { type = NavType.IntType })
 		) {
-
 			DetailUserBottomSheet(
 				id = it.arguments?.getInt("id") as Int,
-				toWebView = {
-
-				})
+				toWebView = { url ->
+					navHostController.navigate("WebView/${url.fixArgs()}")
+				}
+			)
 		}
 
-		activity("WebView/{url}"){
-			Web
+		composable(
+			route = "WebView/{url}",
+			arguments = listOf(navArgument("url") { type = NavType.StringType })
+		) {
+			MyWebView(it.arguments?.getString("url") as String) {
+				navHostController.navigateUp()
+			}
 		}
+
 	}
 }
 
