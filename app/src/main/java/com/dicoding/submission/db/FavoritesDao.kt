@@ -14,13 +14,17 @@ interface FavoritesDao {
         @Query("SELECT * FROM favorite WHERE Login =:login")
         fun getUserByLogin(login: String) : Flow<Favorites>
 
+
+        @Query("SELECT * FROM favorite WHERE _ID =:id")
+        fun getUserById(id: Long?) : Cursor
+
         @Query("SELECT * FROM favorite")
         fun cursorDB(): Cursor
 
         @Query("SELECT * FROM favorite WHERE Login = :login")
-        fun isExist(login : String?) : LiveData<List<Favorites>>
+        fun isExist(login : String) : LiveData<List<Favorites>>
 
-        @Query("DELETE  FROM favorite WHERE _ID = :id")
+        @Query("DELETE  FROM favorite WHERE _ID =:id")
         fun deleteAll(id : Long?): Int
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)

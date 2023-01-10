@@ -10,8 +10,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -37,11 +35,11 @@ object MainModule {
 	@Provides
 	@Singleton
 	fun provideRetrofit(): Retrofit {
-		val loggingInterceptor =
+		/*val loggingInterceptor =
 			HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 		val client = OkHttpClient.Builder()
 			.addInterceptor(loggingInterceptor)
-			.build()
+			.build()*/
 
 		return Retrofit
 			.Builder()

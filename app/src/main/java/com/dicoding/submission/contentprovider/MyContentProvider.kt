@@ -44,6 +44,7 @@ class MyContentProvider : ContentProvider() {
 	): Cursor? {
 		return when(uriMatcher.match(uri)) {
 			CODE_ALL_DATA -> favoriteDatabase.listUsersDao().cursorDB()
+			CODE_DATA_ID -> favoriteDatabase.listUsersDao().getUserById(uri.lastPathSegment?.toLong())
 			else -> null
 		}
 	}
@@ -64,8 +65,6 @@ class MyContentProvider : ContentProvider() {
 	override fun insert(uri: Uri, values: ContentValues?): Uri? {
 		return null
 	}
-
-
 
 
 	override fun update(

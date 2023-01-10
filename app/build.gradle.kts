@@ -102,7 +102,7 @@ dependencies {
 	implementation("com.squareup.retrofit2:retrofit:2.9.0")
 	implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 	implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
-	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10")
+	implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
 	implementation("androidx.recyclerview:recyclerview:1.2.1")
 
@@ -110,11 +110,11 @@ dependencies {
 	kapt("com.github.bumptech.glide:compiler:4.14.2")
 
 	//gson
-	implementation ("com.google.code.gson:gson:2.10")
+	implementation ("com.google.code.gson:gson:2.10.1")
 
 	// hilt
-	implementation("com.google.dagger:hilt-android:2.44")
-	kapt("com.google.dagger:hilt-android-compiler:2.44")
+	implementation("com.google.dagger:hilt-android:2.44.2")
+	kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
 	//koil
 	implementation("io.coil-kt:coil-compose:2.2.2")
@@ -140,11 +140,11 @@ dependencies {
 
 	implementation ("com.google.accompanist:accompanist-navigation-material:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-	implementation ("com.google.accompanist:accompanist-permissions:$accompanistVersion")
-	implementation ("com.google.accompanist:accompanist-pager:$accompanistVersion")
+	//implementation ("com.google.accompanist:accompanist-permissions:$accompanistVersion")
+	//implementation ("com.google.accompanist:accompanist-pager:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
-	implementation ("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
+	//implementation ("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
 	implementation ("com.google.accompanist:accompanist-drawablepainter:$accompanistVersion")
 
 	//data store

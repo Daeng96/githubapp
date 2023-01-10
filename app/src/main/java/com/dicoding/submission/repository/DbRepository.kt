@@ -15,6 +15,6 @@ class DbRepository @Inject constructor(
 	fun getUserByLogin(login: String) = favoritesDao.getUserByLogin(login)
 	suspend fun insertAll(favorites: Favorites)  { favoritesDao.insertAll(favorites) }
 	suspend fun unFavorite(favorites: Favorites) { favoritesDao.unFavorite(favorites) }
-	fun isExists(login: String?): LiveData<List<Favorites>> = favoritesDao.isExist(login)
+	fun isExists(login: String): LiveData<List<Favorites>> = favoritesDao.isExist(login)
 
 }

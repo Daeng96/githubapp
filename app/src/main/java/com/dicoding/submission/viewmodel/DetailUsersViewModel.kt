@@ -28,7 +28,7 @@ class DetailUsersViewModel @Inject constructor(
 
 	fun getUserByLogin(login: String) = dbRepository.getUserByLogin(login)
 	val allUsers: LiveData<List<Favorites>> = dbRepository.listUsers
-	fun isExists(login: String?)  = dbRepository.isExists(login).map { it.isNotEmpty() }
+	fun isExists(login: String)  = dbRepository.isExists(login).map { it.isNotEmpty() }
 
 	fun insertAll(favorite: Favorites) = viewModelScope.launch(Dispatchers.IO) {
 		dbRepository.insertAll(favorite)

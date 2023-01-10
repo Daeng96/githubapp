@@ -1,5 +1,6 @@
 package com.dicoding.submission.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +23,7 @@ fun ListFavoritesScreen(
 
 	LazyColumn(
 		contentPadding = PaddingValues(all = 16.dp),
+		verticalArrangement = Arrangement.spacedBy(8.dp),
 		content = {
 		items(items = favorites) { user ->
 			ListItem(
@@ -31,5 +33,4 @@ fun ListFavoritesScreen(
 				itemOnClick = showBottomSheet)
 		}
 	})
-
 }

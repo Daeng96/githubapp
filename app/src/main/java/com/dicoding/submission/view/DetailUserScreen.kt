@@ -6,16 +6,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HomeWork
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.Top
-import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -48,13 +43,10 @@ import com.dicoding.submission.viewmodel.RequestResult
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
-import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DetailUserScreen(
 	login: String,
@@ -67,21 +59,12 @@ fun DetailUserScreen(
 	}
 	val isExists by detailUsersViewModel.isExists(login).observeAsState(false)
 	val coroutineScope = rememberCoroutineScope()
-	var refreshing by remember { mutableStateOf(false) }
-	fun refresh() = coroutineScope.launch(Dispatchers.IO) {
-		refreshing = true
-		detailUsersViewModel.setDetailUsers(login)
-		refreshing = false
-	}
-
-	val pullRefreshState = rememberPullRefreshState(refreshing = refreshing, onRefresh = ::refresh)
 
 	val userDetailResult =
 		detailUsersViewModel.detailUser.observeAsState(RequestResult.Progress).value
 
 	Box(
 		modifier = Modifier
-			.pullRefresh(pullRefreshState, enabled = true)
 			.fillMaxSize()
 
 	) {
@@ -127,17 +110,10 @@ fun DetailUserScreen(
 				)
 			}
 		}
-		PullRefreshIndicator(
-			refreshing = refreshing,
-			state = pullRefreshState,
-			modifier = Modifier.align(TopCenter)
-		)
 	}
 }
 
-@OptIn(
-	ExperimentalPagerApi::class, ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailUserContent(
 	user: DetailUser,
@@ -346,19 +322,19 @@ fun ColumnScope.ProfileContent(
 				RightBottomPanel(
 					modifier = Modifier.wrapContentSize(),
 					title = stringResource(id = R.string.follower),
-					subtitle = "${followers}",
+					subtitle = "$followers",
 					colors = listOf(Color.Red, Orange)
 				)
 				RightBottomPanel(
 					modifier = Modifier.wrapContentSize(),
 					title = stringResource(id = R.string.following),
-					subtitle = "${following}",
+					subtitle = "$following",
 					colors = listOf(Purple, Purple1)
 				)
 				RightBottomPanel(
 					modifier = Modifier.wrapContentSize(),
 					title = stringResource(id = R.string.repo),
-					subtitle = "${publicRepos}",
+					subtitle = "$publicRepos",
 					colors = listOf(Blue, Blue1)
 				)
 			}

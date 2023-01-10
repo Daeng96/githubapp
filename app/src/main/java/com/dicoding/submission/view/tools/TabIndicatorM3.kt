@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import com.google.accompanist.pager.ExperimentalPagerApi
 
 
 object GithubTabRowDefault {
@@ -37,7 +36,6 @@ object GithubTabRowDefault {
 	}
 
 	@OptIn(ExperimentalFoundationApi::class)
-	@ExperimentalPagerApi
 	fun Modifier.pagerM3TabIndicatorOffset(
 		pagerState: PagerState,
 		tabPositions: List<TabPosition>,

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.latihan.gitgubconsumerapp"
-        minSdk = 22
+        minSdk = 24
         targetSdk =  33
         versionCode = 1
         versionName = "2.0"
@@ -63,6 +63,7 @@ dependencies {
    // implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.10'
     implementation ("androidx.core:core-ktx:1.9.0")
     implementation ("androidx.appcompat:appcompat:1.5.1")
+   /*
     implementation ("androidx.room:room-runtime:2.4.3")
     implementation ("androidx.room:room-ktx:2.4.3")
     implementation ("com.google.android.material:material:1.7.0")
@@ -70,9 +71,9 @@ dependencies {
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     kapt ("com.github.bumptech.glide:compiler:4.14.2")
-    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    implementation ("com.github.bumptech.glide:glide:4.14.2")*/
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+   //implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
     // coil
     implementation("io.coil-kt:coil-compose:2.2.2")
@@ -80,6 +81,7 @@ dependencies {
     // compose
     implementation ("androidx.compose.foundation:foundation:$composeVersion")
     implementation ("androidx.compose.material3:material3:1.1.0-alpha03")
+    implementation ("androidx.compose.material:material:1.4.0-alpha03")
     implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha03")
     implementation ("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
@@ -97,6 +99,7 @@ dependencies {
 
     implementation ("com.google.accompanist:accompanist-navigation-material:$accompanistVersion")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation ("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
