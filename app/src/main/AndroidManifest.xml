@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.dicoding.submission">
+    package="com.arteneta.githubapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <permission
-        android:name="com.dicoding.submission.READ_DATABASE"
+        android:name="${applicationId}.READ_DATABASE"
         android:protectionLevel="normal" />
     <permission
-        android:name="com.dicoding.submission.WRITE_DATABASE"
+        android:name="${applicationId}.WRITE_DATABASE"
         android:protectionLevel="normal" />
 
     <application
-        android:name=".GithubApplication"
+        android:name="com.arteneta.githubapp.GithubApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +26,8 @@
         android:dataExtractionRules="@xml/data_extraction_rules">
 
 
-        <receiver android:name=".widget.MyWidget"
+        <receiver android:name=".widget.ComposeAppWidgetReceiver"
+            android:enabled="@bool/glance_appwidget_available"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -37,20 +38,20 @@
                 android:resource="@xml/my_widget_info" />
         </receiver>
 
-        <service
+       <!-- <service
             android:name=".widget.MyRemoteViewsServices"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_REMOTEVIEWS" />-->
 
         <provider
             android:name=".contentprovider.MyContentProvider"
-            android:authorities="com.dicoding.submission"
+            android:authorities="${applicationId}"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="com.dicoding.submission.READ_DATABASE"
-            android:writePermission="com.dicoding.submission.WRITE_DATABASE" />
+            android:readPermission="${applicationId}.READ_DATABASE"
+            android:writePermission="${applicationId}.WRITE_DATABASE" />
 
         <receiver
-            android:name=".alarmnotifications.AlarmReceiver"
+            android:name="com.arteneta.githubapp.alarmnotifications.AlarmReceiver"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedReceiver" />

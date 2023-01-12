@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Github User BFAA"
+rootProject.name = "Github User"
 include (":app")
-include(":gitgubconsumerapp")
+include(":githubconsumerapp")

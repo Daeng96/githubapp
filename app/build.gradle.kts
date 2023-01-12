@@ -11,7 +11,7 @@ android {
 	buildToolsVersion = "33.0.0"
 
 	defaultConfig {
-		applicationId = "com.dicoding.submission"
+		applicationId = "com.arteneta.githubapp"
 		minSdk = 22
 		targetSdk= 33
 		versionCode = 2
@@ -33,10 +33,10 @@ android {
 				"proguard-rules.pro"
 			)
 		}
-		getByName("debug") {
+		/*getByName("debug") {
 			applicationIdSuffix = ".debug"
 			versionNameSuffix = ".deb"
-		}
+		}*/
 	}
 
 	compileOptions {
@@ -68,11 +68,10 @@ android {
 }
 
 dependencies {
-	implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
+	implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 	val composeVersion = "1.4.0-alpha03"
 
-	//implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
 	implementation("androidx.core:core-ktx:1.9.0")
 	implementation("androidx.appcompat:appcompat:1.5.1")
 	implementation("com.google.android.material:material:1.7.0")
@@ -133,6 +132,9 @@ dependencies {
 	implementation ("androidx.compose.material:material-icons-extended:1.3.1")
 	implementation ("com.google.dagger:hilt-android:2.44.2")
 	kapt ("com.google.dagger:hilt-compiler:2.44.2")
+
+	//glance
+	implementation ("androidx.glance:glance-appwidget:1.0.0-alpha05")
 
 	//accompanist
 	val accompanistVersion = "0.28.0"
