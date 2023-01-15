@@ -5,15 +5,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -39,13 +40,22 @@ fun LazyItemScope.ListItem(
 			horizontalArrangement = Arrangement.spacedBy(8.dp),
 			verticalAlignment = CenterVertically
 		) {
-			AsyncImage(
+			SubcomposeAsyncImage(
 				model = avatarUrl,
 				contentDescription = login,
+				loading = { CircularProgressIndicator() },
+				error = {
+					Icon(
+						imageVector = Icons.Default.BrokenImage,
+						contentDescription = "error load $login avatar",
+						tint = MaterialTheme.colorScheme.onError
+					)
+				},
 				modifier = Modifier
 					.size(50.dp)
 					.clip(CircleShape)
 			)
+
 			Column(
 				verticalArrangement = Arrangement.spacedBy(8.dp)
 			) {
