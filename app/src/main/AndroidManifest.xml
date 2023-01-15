@@ -15,18 +15,20 @@
         android:protectionLevel="normal" />
 
     <application
-        android:name="com.arteneta.githubapp.GithubApplication"
+        android:name=".GithubApplication"
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+        tools:targetApi="s">
 
 
-        <receiver android:name=".widget.ComposeAppWidgetReceiver"
+        <receiver
+            android:name=".widget.ComposeAppWidgetReceiver"
             android:enabled="@bool/glance_appwidget_available"
             android:exported="true">
             <intent-filter>
@@ -38,9 +40,9 @@
                 android:resource="@xml/my_widget_info" />
         </receiver>
 
-       <!-- <service
-            android:name=".widget.MyRemoteViewsServices"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />-->
+        <!-- <service
+             android:name=".widget.MyRemoteViewsServices"
+             android:permission="android.permission.BIND_REMOTEVIEWS" />-->
 
         <provider
             android:name=".contentprovider.MyContentProvider"
@@ -53,16 +55,32 @@
         <receiver
             android:name="com.arteneta.githubapp.alarmnotifications.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             tools:ignore="ExportedReceiver" />
 
-        <activity android:name=".view.MainActivity"
+        <activity
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="www.arteneta.github.app"
+                    android:path="/login"
+                    android:pathPrefix="/Home"
+                    android:scheme="http" />
+            </intent-filter>
+
+
         </activity>
     </application>
 

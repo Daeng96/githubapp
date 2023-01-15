@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Immutable
 @Parcelize
 data class Favorites(
-	var _ID: Int = 0,
+	var _ID: Long = 0,
 	var login: String = "",
 	var avatarUrl: String = "",
 	val name: String? = "",

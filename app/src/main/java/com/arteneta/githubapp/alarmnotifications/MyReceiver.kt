@@ -28,7 +28,6 @@ class AlarmReceiver : BroadcastReceiver() {
 		showAlarmNotification(context)
 	}
 
-	@RequiresApi(Build.VERSION_CODES.M)
 	fun setRepeater(context: Context) {
 		alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 		alarmIntent = Intent(context, AlarmReceiver::class.java).let {
@@ -53,7 +52,6 @@ class AlarmReceiver : BroadcastReceiver() {
 		)
 	}
 
-	@RequiresApi(Build.VERSION_CODES.M)
 	fun cancelRepeater(context: Context) {
 		alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 		alarmIntent = Intent(context, AlarmReceiver::class.java).let {

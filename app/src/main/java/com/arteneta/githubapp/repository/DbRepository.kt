@@ -12,6 +12,7 @@ class DbRepository @Inject constructor(
 ) {
 
 	val listUsers: LiveData<List<Favorites>> = favoritesDao.getListUsers()
+	fun getCursor() = favoritesDao.cursorDB()
 	fun getUserByLogin(login: String) = favoritesDao.getUserByLogin(login)
 	suspend fun insertAll(favorites: Favorites)  { favoritesDao.insertAll(favorites) }
 	suspend fun unFavorite(favorites: Favorites) { favoritesDao.unFavorite(favorites) }

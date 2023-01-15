@@ -2,7 +2,6 @@ package com.arteneta.githubapp.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
@@ -20,17 +19,14 @@ class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		WindowCompat.setDecorFitsSystemWindows(window, false)
-		//migration UI
-
-		val id = intent.getIntExtra("id_key", 0)
 
 		setContent {
-			Log.i("intent", "$id")
 			GithubMaterialTheme {
 				GitHubScaffold()
 			}
 		}
 	}
+
 
 	companion object {
 		const val EXTRA_PERSON = "person"

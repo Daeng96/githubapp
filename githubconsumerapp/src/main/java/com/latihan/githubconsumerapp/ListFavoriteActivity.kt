@@ -49,7 +49,7 @@ class ListFavoriteActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Activity.HomeScreen(
-	showBottomSheet: (Int) -> Unit
+	showBottomSheet: (Long) -> Unit
 ) {
 
 	val favoriteList = remember { mutableStateListOf<Favorites>() }

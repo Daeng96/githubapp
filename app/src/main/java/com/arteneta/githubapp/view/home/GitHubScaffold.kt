@@ -31,7 +31,7 @@ fun Activity.GitHubScaffold() {
 	val searchResult = searchViewModel.searchUsersResult.observeAsState().value
 
 	ModalBottomSheetLayout(
-		bottomSheetNavigator,
+		bottomSheetNavigator = bottomSheetNavigator,
 		sheetShape = TopShape ,
 		sheetBackgroundColor =  MaterialTheme.colorScheme.surfaceVariant
 	) {

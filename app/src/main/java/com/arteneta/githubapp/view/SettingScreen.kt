@@ -17,6 +17,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import com.arteneta.githubapp.R
+import com.arteneta.githubapp.alarmnotifications.AlarmReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -31,7 +32,7 @@ fun SettingScreen() {
 	val preferences = remember { GithubDataStore(context.githubPref) }
 	val alarmEnable = preferences.githubDataStore.collectAsState(initial = GithubAppPref()).value
 	val coroutineScope = rememberCoroutineScope()
-	val alarmReceiver = remember { com.arteneta.githubapp.alarmnotifications.AlarmReceiver() }
+	val alarmReceiver = remember { AlarmReceiver() }
 
 	LaunchedEffect(key1 = alarmEnable.alarmEnable, block = {
 		if (alarmEnable.alarmEnable) {

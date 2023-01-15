@@ -33,10 +33,10 @@ fun Activity.GithubNavigation(
 
 		bottomSheet(
 			route = "Home/{id}",
-			arguments = listOf(navArgument("id") { type = NavType.IntType })
+			arguments = listOf(navArgument("id") { type = NavType.LongType })
 		) {
 			DetailUserBottomSheet(
-				id = it.arguments?.getInt("id") as Int,
+				id = it.arguments?.getLong("id") as Long,
 				toWebView = { url ->
 					navHostController.navigate("WebView/${url.fixArgs()}")
 				}

@@ -19,6 +19,7 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.arteneta.githubapp.R
@@ -46,6 +48,8 @@ import com.arteneta.githubapp.view.tools.ProgressIndicator
 import com.arteneta.githubapp.viewmodel.DetailUsersViewModel
 import com.arteneta.githubapp.viewmodel.FollowViewModel
 import com.arteneta.githubapp.viewmodel.RequestResult
+import com.arteneta.githubapp.widget.ComposeAppWidget
+import com.arteneta.githubapp.widget.WidgetWorker
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
@@ -60,6 +64,7 @@ fun DetailUserScreen(
 	login: String,
 	navigateToDetail: (String) -> Unit
 ) {
+
 	val detailUsersViewModel: DetailUsersViewModel = hiltViewModel()
 	val context = LocalContext.current
 
@@ -71,6 +76,8 @@ fun DetailUserScreen(
 
 	val userDetailResult =
 		detailUsersViewModel.detailUser.observeAsState(RequestResult.Progress).value
+
+
 
 	var refreshing by remember { mutableStateOf(false) }
 	fun refresh() = coroutineScope.launch(Dispatchers.IO) {
@@ -98,6 +105,9 @@ fun DetailUserScreen(
 				)
 				ExtendedFloatingActionButton(
 					onClick = {
+						coroutineScope.launch {
+							WidgetWorker.enqueueUniqueWork(context, true)
+						}
 						if (isExists) {
 							detailUsersViewModel.unFavorite(userDetailResult.data.asFavorites())
 						} else {

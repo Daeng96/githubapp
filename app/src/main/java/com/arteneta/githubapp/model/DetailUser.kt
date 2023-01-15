@@ -49,7 +49,7 @@ data class DetailUser (
 
 ) {
     fun asFavorites () = Favorites(
-        _id = id,
+        _id = id!!.toLong(),
         login = login,
         avatarUrl = avatarUrl,
         htmlUrl, name, company, location, publicRepos, followers, following

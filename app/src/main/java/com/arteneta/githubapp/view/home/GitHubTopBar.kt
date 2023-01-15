@@ -101,7 +101,7 @@ fun GitHubTopBar(
 				)
 			}
 			NavRoute.HomeScreen.UserDetail -> {
-				val userName = it.arguments?.getString("login") ?: "User Name"
+				val userName = it.arguments?.getString("login") ?: "User Not Found"
 				CenterAlignedTopAppBar(
 					title = { Text(text = userName) },
 					navigationIcon = {

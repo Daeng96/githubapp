@@ -30,7 +30,7 @@ import com.latihan.githubconsumerapp.Utils.CONTENT_URI
 import com.latihan.githubconsumerapp.theme.*
 
 @Composable
-fun DetailUserBottomSheet(id: Int, toWebView: (String) -> Unit) {
+fun DetailUserBottomSheet(id: Long, toWebView: (String) -> Unit) {
 
 	val context = LocalContext.current
 	val uri = Uri.parse("$CONTENT_URI/$id")

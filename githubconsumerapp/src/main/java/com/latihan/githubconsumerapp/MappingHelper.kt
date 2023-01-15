@@ -9,7 +9,7 @@ object MappingHelper {
 		val fvList = ArrayList<Favorites>()
 		cursor?.apply {
 			while (moveToNext()) {
-				val id = getInt(getColumnIndexOrThrow("_ID"))
+				val id = getLong(getColumnIndexOrThrow("_ID"))
 				val login = getString(getColumnIndexOrThrow("login"))
 				val avatarUrl = getString(getColumnIndexOrThrow("Avatar Url"))
 				val fullName = getString(getColumnIndexOrThrow("Full Name"))
@@ -35,7 +35,7 @@ object MappingHelper {
 		var favorites = Favorites()
 		cursor?.apply {
 			if (moveToFirst()) {
-				val id = getInt(getColumnIndexOrThrow("_ID"))
+				val id = getLong(getColumnIndexOrThrow("_ID"))
 				val login = getString(getColumnIndexOrThrow("login"))
 				val avatarUrl = getString(getColumnIndexOrThrow("Avatar Url"))
 				val fullName = getString(getColumnIndexOrThrow("Full Name"))

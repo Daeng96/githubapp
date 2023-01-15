@@ -33,11 +33,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.majorVersion
         freeCompilerArgs = listOf(
             "-opt-in=kotlin.RequiresOptIn"
         )
@@ -59,9 +59,9 @@ android {
 }
 
 dependencies {
-	val composeVersion = "1.4.0-alpha03"
+	val composeVersion = "1.4.0-alpha04"
     implementation ("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.appcompat:appcompat:1.5.1")
+    implementation ("androidx.appcompat:appcompat:1.6.0")
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
     // coil
@@ -69,9 +69,9 @@ dependencies {
 
     // compose
     implementation ("androidx.compose.foundation:foundation:$composeVersion")
-    implementation ("androidx.compose.material3:material3:1.1.0-alpha03")
-    implementation ("androidx.compose.material:material:1.4.0-alpha03")
-    implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha03")
+    implementation ("androidx.compose.material3:material3:1.1.0-alpha04")
+    implementation ("androidx.compose.material:material:1.4.0-alpha04")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha04")
     implementation ("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation ("androidx.compose.ui:ui:$composeVersion")

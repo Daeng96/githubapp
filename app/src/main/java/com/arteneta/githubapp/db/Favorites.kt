@@ -4,14 +4,13 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.arteneta.githubapp.model.WidgetData
 
 
 @kotlinx.parcelize.Parcelize
 @Entity(tableName = "favorite")
 data class Favorites (
     @PrimaryKey
-    @ColumnInfo(name = "_ID")var _id: Int? = 0,
+    @ColumnInfo(name = "_ID")var _id: Long = 0L,
     @ColumnInfo(name = "Login")var login: String = "",
     @ColumnInfo(name = "Avatar Url")var avatarUrl: String = "",
     @ColumnInfo(name = "HTML Url")var htmlUrl: String? = "",
@@ -21,7 +20,4 @@ data class Favorites (
     @ColumnInfo(name = "DbRepository")var publicRepos: Int? = 0,
     @ColumnInfo(name = "Followers")var followers: Int? = 0,
     @ColumnInfo(name = "Following")var following: Int? = 0
-)  : Parcelable {
-
-    fun asWidgetData() = WidgetData(_id!!, login, avatarUrl)
-}
+)  : Parcelable
