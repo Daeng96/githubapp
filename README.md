@@ -9,7 +9,7 @@
 |Home|Detail|Setting|Favorite|
 |:--|:--:|:--:|--:|
 |![Preview 1](screenshoot/home.png)|![Preview 3](screenshoot/detail.png)|![Preview 1](screenshoot/setting.png)|![Preview 5](screenshoot/favorites.png)
-|![Preview 2](screenshoot/home1.png)|![Preview 4](screenshoot/detail1.png)|
+|![Preview 2](screenshoot/home1.png)|![Preview 4](screenshoot/detail1.png)||![Preview 5](screenshoot/widget.jpg)|
 
 
 ## Consumerapp
