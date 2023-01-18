@@ -33,11 +33,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.majorVersion
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = listOf(
             "-opt-in=kotlin.RequiresOptIn"
         )
@@ -53,7 +53,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 }
@@ -84,7 +83,7 @@ dependencies {
     kapt ("com.google.dagger:hilt-compiler:2.44.2")
 
 
-    val accompanistVersion = "0.28.0"
+    val accompanistVersion = "0.29.0-alpha"
 
     implementation ("com.google.accompanist:accompanist-navigation-material:$accompanistVersion")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
