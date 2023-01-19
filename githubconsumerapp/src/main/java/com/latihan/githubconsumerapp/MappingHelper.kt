@@ -4,9 +4,8 @@ import android.database.Cursor
 
 object MappingHelper {
 
-
 	fun mapCursor(cursor: Cursor?): ArrayList<Favorites> {
-		val fvList = ArrayList<Favorites>()
+		val fvList = arrayListOf<Favorites>()
 		cursor?.apply {
 			while (moveToNext()) {
 				val id = getLong(getColumnIndexOrThrow("_ID"))

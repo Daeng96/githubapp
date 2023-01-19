@@ -5,9 +5,8 @@ import android.database.Cursor
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
-import androidx.glance.appwidget.updateAll
 import androidx.work.*
-import com.arteneta.githubapp.db.FavoriteDatabase
+import com.arteneta.githubapp.contentprovider.MyContentProvider.Companion.CONTENT_URI
 import com.arteneta.githubapp.model.WidgetData
 import com.arteneta.githubapp.model.WidgetStateData
 import kotlinx.coroutines.delay
@@ -21,15 +20,22 @@ class WidgetWorker(
 	override suspend fun doWork(): Result {
 		val manager = GlanceAppWidgetManager(context)
 		val glanceIds = manager.getGlanceIds(ComposeAppWidget::class.java)
-		val db = FavoriteDatabase.getDatabase(applicationContext)
-		val dao = db.listUsersDao()
 
 		if (glanceIds.isEmpty()) return Result.failure()
+
+		val cursor = applicationContext.contentResolver.query(
+			CONTENT_URI,
+			null,
+			null,
+			null,
+			null
+		)
+
 
 		return try {
 			// Update state to indicate loading
 
-			val data = getFavorites(dao.cursorDB()).toList()
+			val data = getFavorites(cursor).sortedBy { it.login }
 			setWidgetState(glanceIds, WidgetStateData.Loading)
 
 			delay(100L)
@@ -46,16 +52,16 @@ class WidgetWorker(
 	 * Update the state of all widgets and then force update UI
 	 */
 	private suspend fun setWidgetState(glanceIds: List<GlanceId>, newState: WidgetStateData) {
-		glanceIds.forEach { glanceId ->
+
+		glanceIds.firstOrNull()?.let {
 			updateAppWidgetState(
 				context = context,
 				definition = WidgetDataDefinition,
-				glanceId = glanceId,
+				glanceId = it,
 				updateState = { newState }
 			)
+			ComposeAppWidget().update(context, it)
 		}
-
-		ComposeAppWidget().updateAll(context)
 	}
 
 	companion object {
@@ -93,6 +99,5 @@ class WidgetWorker(
 			}
 			return widgetData
 		}
-
 	}
 }

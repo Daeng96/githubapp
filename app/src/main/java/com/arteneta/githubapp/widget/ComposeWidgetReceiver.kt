@@ -18,7 +18,7 @@ class ComposeAppWidgetReceiver : GlanceAppWidgetReceiver() {
 
 	override fun onEnabled(context: Context) {
 		super.onEnabled(context)
-		WidgetWorker.enqueueUniqueWork(context, true)
+		WidgetWorker.enqueueUniqueWork(context, false)
 	}
 
 }

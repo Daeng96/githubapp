@@ -4,14 +4,16 @@ import android.content.Intent
 import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.glance.*
 import androidx.glance.action.clickable
-import androidx.glance.appwidget.*
+import androidx.glance.appwidget.CircularProgressIndicator
+import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.actionStartActivity
+import androidx.glance.appwidget.appWidgetBackground
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.itemsIndexed
 import androidx.glance.layout.*
@@ -26,57 +28,33 @@ import com.arteneta.githubapp.model.WidgetStateData
 
 class ComposeAppWidget : GlanceAppWidget() {
 
-	companion object {
-		val columnMode = DpSize(120.dp, 184.dp)
-		val lazyColumnMode = DpSize(120.dp, 120.dp)
-	}
-
 	override val stateDefinition: GlanceStateDefinition<*>
 		get() = WidgetDataDefinition
-
-	override val sizeMode: SizeMode
-		get() = SizeMode.Responsive(setOf(columnMode, lazyColumnMode))
 
 	@Composable
 	override fun Content() {
 		val context = LocalContext.current
 		val state = currentState<WidgetStateData>()
-		val sizeState = LocalSize.current
 
-		Box(
+		Column(
 			modifier = GlanceModifier
 				.fillMaxSize()
 				.appWidgetBackground()
 				.background(imageProvider = ImageProvider(R.drawable.background_widget))
-				.appWidgetBackgroundCornerRadius(),
-			contentAlignment = Alignment.Center
+				.appWidgetBackgroundCornerRadius()
 		) {
 
 			when (state) {
 				is WidgetStateData.Loading -> { CircularProgressIndicator() }
 				is WidgetStateData.Data -> {
-
-					Column(
-						modifier = GlanceModifier.fillMaxSize()
-					) {
-
-						Header(
-							title = context.getString(R.string.list_favorite),
-							modifier = GlanceModifier
-								.fillMaxWidth()
-								.background(imageProvider = ImageProvider(R.drawable.background_title_widget))
-								.padding(vertical = 4.dp)
-						)
-
-						when (sizeState) {
-							columnMode -> {
-								ContentColumnWidget(data = state)
-							}
-							lazyColumnMode -> {
-								ContentLazyColumnWidget(data = state)
-							}
-						}
-					}
+					Header(
+						title = context.getString(R.string.list_favorite),
+						modifier = GlanceModifier
+							.fillMaxWidth()
+							.background(imageProvider = ImageProvider(R.drawable.background_title_widget))
+							.padding(vertical = 4.dp)
+					)
+					ContentLazyColumnWidget(data = state)
 				}
 				is WidgetStateData.Unavailable -> { Text(text = state.message) }
 			}
@@ -84,7 +62,7 @@ class ComposeAppWidget : GlanceAppWidget() {
 	}
 }
 
-@Composable
+/*@Composable
 private fun ContentColumnWidget(
 	data: WidgetStateData.Data
 ) {
@@ -111,7 +89,7 @@ private fun ContentColumnWidget(
 				)
 		)
 	}
-}
+}*/
 
 @Composable
 private fun ContentLazyColumnWidget(
@@ -127,19 +105,14 @@ private fun ContentLazyColumnWidget(
 				ListItem(
 					index = index,
 					user = user.login,
-					modifier = GlanceModifier.fillMaxWidth().background(
-						color = if (index % 2 == 0) Color.LightGray.copy(0.3f) else Color.DarkGray.copy(
-							alpha = 0.3f
-						)
-					)
-						.padding(vertical = 2.dp, horizontal = 8.dp)
+					modifier = GlanceModifier.fillMaxWidth()
+						.padding(vertical = 4.dp, horizontal = 8.dp)
 						.clickable(
 							onClick = actionStartActivity(
 								intent = Intent(Intent.ACTION_VIEW).apply {
 									this.data =
 										"http://www.arteneta.github.app/Home/${user.login}".toUri()
 									setPackage("com.arteneta.githubapp")
-									flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
 								}
 							)
 						)
@@ -147,7 +120,6 @@ private fun ContentLazyColumnWidget(
 			}
 		}
 	)
-
 }
 
 

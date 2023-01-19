@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import coil.compose.AsyncImage
-import com.latihan.githubconsumerapp.R
 import com.latihan.githubconsumerapp.Utils.CONTENT_URI
 import com.latihan.githubconsumerapp.theme.GithubMaterialTheme
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +59,6 @@ fun Activity.HomeScreen(
 			null,
 			null,
 			null,
-			null,
 			null
 		)
 		favoriteList.addAll(MappingHelper.mapCursor(cursor))
@@ -71,6 +69,7 @@ fun Activity.HomeScreen(
 	fun refresh() = coroutineScope.launch(Dispatchers.IO) {
 		refreshing = true
 		favoriteList.clear()
+
 		val cursor = contentResolver.query(
 			CONTENT_URI,
 			null,
