@@ -43,6 +43,8 @@ class ListFavoriteActivity : ComponentActivity() {
 			}
 		}
 	}
+
+
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -53,16 +55,18 @@ fun Activity.HomeScreen(
 
 	val favoriteList = remember { mutableStateListOf<Favorites>() }
 
-	LaunchedEffect(key1 = favoriteList, block = {
-		val cursor = contentResolver.query(
-			CONTENT_URI,
-			null,
-			null,
-			null,
-			null
-		)
-		favoriteList.addAll(MappingHelper.mapCursor(cursor))
-	})
+	LaunchedEffect(
+		key1 = favoriteList,
+		block = {
+			val cursor = contentResolver.query(
+				CONTENT_URI,
+				null,
+				null,
+				null,
+				null
+			)
+			favoriteList.addAll(MappingHelper.mapCursor(cursor))
+		})
 
 	val coroutineScope = rememberCoroutineScope()
 	var refreshing by remember { mutableStateOf(false) }
@@ -89,12 +93,12 @@ fun Activity.HomeScreen(
 		modifier = Modifier
 			.fillMaxSize()
 			.pullRefresh(pullRefreshState)
+
 	) {
 		LazyColumn(
 			state = rememberLazyListState(),
 			contentPadding = PaddingValues(horizontal = 16.dp, 8.dp),
 			modifier = Modifier.fillMaxSize(),
-			//verticalArrangement = Arrangement.spacedBy(8.dp),
 			content = {
 				items(items = favoriteList, key = { it._ID }) { user ->
 					ListItem(
@@ -115,15 +119,14 @@ fun Activity.HomeScreen(
 		PullRefreshIndicator(
 			refreshing = refreshing,
 			state = pullRefreshState,
-			modifier = Modifier.align(
-				Alignment.TopCenter
-			)
+			modifier = Modifier.align(Alignment.TopCenter),
+			contentColor = MaterialTheme.colorScheme.onPrimary,
+			backgroundColor = MaterialTheme.colorScheme.primary
 		)
 	}
 
-	BackHandler(true) {
-		finish()
-	}
+	BackHandler(true) { finish() }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)
