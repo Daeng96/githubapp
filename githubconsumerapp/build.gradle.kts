@@ -68,9 +68,9 @@ dependencies {
 
     // compose
     implementation ("androidx.compose.foundation:foundation:$composeVersion")
-    implementation ("androidx.compose.material3:material3:1.1.0-alpha04")
-    implementation ("androidx.compose.material:material:1.4.0-alpha04")
-    implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha04")
+    implementation ("androidx.compose.material3:material3:1.1.0-alpha05")
+    implementation ("androidx.compose.material:material:1.4.0-alpha05")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.1.0-alpha05")
     implementation ("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation ("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation ("androidx.compose.ui:ui:$composeVersion")
@@ -83,11 +83,12 @@ dependencies {
     kapt ("com.google.dagger:hilt-compiler:2.44.2")
 
 
-    val accompanistVersion = "0.29.0-alpha"
+    val accompanistVersion = "0.29.1-alpha"
 
     implementation ("com.google.accompanist:accompanist-navigation-material:$accompanistVersion")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     implementation ("com.google.accompanist:accompanist-flowlayout:$accompanistVersion")
+    implementation ("com.google.accompanist:accompanist-webview:$accompanistVersion")
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
