@@ -1,25 +1,25 @@
 package com.latihan.githubconsumerapp
 
 import android.annotation.SuppressLint
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.viewinterop.AndroidView
-import com.latihan.githubconsumerapp.Utils.fixUri
+import com.google.accompanist.web.LoadingState
+import com.google.accompanist.web.WebView
+import com.google.accompanist.web.rememberWebViewNavigator
+import com.google.accompanist.web.rememberWebViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -30,61 +30,57 @@ fun MyWebView(url: String, onBackPressed: () -> Unit) {
 
 	val coroutineScope = rememberCoroutineScope()
 	var refreshing by remember { mutableStateOf(false) }
-	var loaded by remember { mutableStateOf(true) }
-	var webView: WebView? = null
-	fun refresh() = coroutineScope.launch(Dispatchers.IO) {
-		refreshing = true
-	}
+	fun refresh() =
+		coroutineScope.launch(Dispatchers.IO) { refreshing = true }
 
 	val pullRefreshState = rememberPullRefreshState(refreshing = refreshing, onRefresh = ::refresh)
+	val webViewState = rememberWebViewState(url = url)
+	val webNavigator = rememberWebViewNavigator()
 
+	LaunchedEffect(
+		key1 = refreshing,
+		key2 = webViewState.loadingState is LoadingState.Finished,
+		block = {
+			if (refreshing) webNavigator.reload()
+			val finished = webViewState.loadingState is LoadingState.Finished
+			if (finished) { refreshing = false }
+		}
+	)
 	Box(
 		modifier = Modifier
 			.fillMaxSize()
 			.pullRefresh(pullRefreshState)
 	) {
 
-		AndroidView(
+		WebView(
+			state = webViewState,
 			modifier = Modifier
-				.wrapContentSize(Alignment.TopCenter)
-				.verticalScroll(ScrollState(0)),
-			factory = { context ->
-				WebView(context).apply {
-					if (refreshing) webView?.loadUrl(url.fixUri())
-					settings.javaScriptEnabled = true
-					webViewClient = object : WebViewClient() {
-						override fun onPageFinished(view: WebView?, url: String?) {
-							super.onPageFinished(view, url)
-							loaded = false
-							refreshing = false
-						}
-					}
-				}
+				.fillMaxSize()
+				.verticalScroll(rememberScrollState()),
+			captureBackPresses = true,
+			navigator = webNavigator,
+			onCreated = {
+				it.settings.javaScriptEnabled = true
 			}
-		) { wv ->
-			url.let { wv.loadUrl(it.fixUri()) }
-			webView = wv
-		}
+		)
 
 		AnimatedVisibility(
-			visible = loaded,
-			modifier = Modifier.align(
-				Alignment.Center
-			)
+			visible = webViewState.isLoading || refreshing,
+			modifier = Modifier.align(Alignment.Center)
 		) {
 			CircularProgressIndicator()
 		}
 
 		PullRefreshIndicator(
+			backgroundColor = MaterialTheme.colorScheme.primary,
+			contentColor = MaterialTheme.colorScheme.onPrimary,
+			modifier = Modifier.align(Alignment.TopCenter),
 			refreshing = refreshing,
-			state = pullRefreshState,
-			modifier = Modifier.align(
-				Alignment.TopCenter
-			)
+			state = pullRefreshState
 		)
 	}
 
 	BackHandler(true) {
-		if (webView?.canGoBack() == true) webView?.goBack() else onBackPressed()
+		if (webNavigator.canGoBack) webNavigator.navigateBack() else onBackPressed()
 	}
 }
