@@ -1,6 +1,8 @@
 package com.latihan.githubconsumerapp
 
 import android.app.Activity
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,7 +19,9 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.latihan.githubconsumerapp.Utils.fixUri
 import com.latihan.githubconsumerapp.theme.TopShape
 
-@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalMaterial3Api::class,
+	ExperimentalFoundationApi::class
+)
 @Composable
 fun Activity.GithubApp() {
 
@@ -36,16 +40,19 @@ fun Activity.GithubApp() {
 					if (it.destination.route?.contains("Home") == true) {
 						CenterAlignedTopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) })
 					} else if (it.destination.route?.contains("WebView") == true) {
-						CenterAlignedTopAppBar(title = {
-							Text(
-								text = it.arguments?.getString("url")?.fixUri() as String,
-								maxLines = 1
-							)
-						}, navigationIcon = {
-							IconButton(onClick = { navHostController.navigateUp() }) {
-								Icon(Icons.Default.ArrowBack, "back")
+						TopAppBar(
+							title = {
+								Text(
+									text = it.arguments?.getString("url")?.fixUri() as String,
+									maxLines = 1,
+									modifier = Modifier.basicMarquee()
+								)
+							}, navigationIcon = {
+								IconButton(onClick = { navHostController.navigateUp() }) {
+									Icon(Icons.Default.ArrowBack, "back")
+								}
 							}
-						})
+						)
 					}
 				}
 			}
